@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:got_app/pages/home.dart';
+import 'package:got_app/pages/highscores.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -15,10 +15,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'User Management',
       theme: ThemeData(
-        primarySwatch: createMaterialColor(Color(0xFF394F49)),
+        primarySwatch: createMaterialColor(const Color(0xFF394F49)),
         textTheme: GoogleFonts.bebasNeueTextTheme(),
       ),
-      home: const Home(),
+      home: const HighScorePage(),
     );
   }
 }

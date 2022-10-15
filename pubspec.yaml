@@ -31,6 +31,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^0.13.3
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -61,9 +62,38 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/avatars/001-knight.png
+    - assets/avatars/002-joker.png
+    - assets/avatars/003-treasure.png
+    - assets/avatars/004-prince.png
+    - assets/avatars/005-princess.png
+    - assets/avatars/006-tower.png
+    - assets/avatars/007-trumpet.png
+    - assets/avatars/008-chess.png
+    - assets/avatars/009-king-crown.png
+    - assets/avatars/010-castle.png
+    - assets/avatars/011-throne.png
+    - assets/avatars/012-queen.png
+    - assets/avatars/013-monarchy.png
+    - assets/avatars/014-crossbow.png
+    - assets/avatars/015-king.png
+    - assets/avatars/016-servant.png
+    - assets/avatars/017-key.png
+    - assets/avatars/018-queen-1.png
+    - assets/avatars/019-ribbon.png
+    - assets/avatars/020-door.png
+    - assets/avatars/021-cup.png
+    - assets/avatars/022-wristwatch.png
+    - assets/avatars/023-flag.png
+    - assets/avatars/024-papyrus.png
+    - assets/avatars/025-spear.png
+    - assets/avatars/026-axe.png
+    - assets/avatars/027-sword.png
+    - assets/avatars/028-fountain.png
+    - assets/avatars/029-helmet.png
+    - assets/avatars/030-mace.png
+    - assets/avatars/031-gazebo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
