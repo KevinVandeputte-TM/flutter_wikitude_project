@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:got_app/theme/theme_const.dart';
 
 class Home extends StatelessWidget {
@@ -12,6 +11,8 @@ class Home extends StatelessWidget {
         title: const Text("Profile"),
       ),
       body: Center(
+        //2 buttons highscores and start game
+
         child: Container(
           alignment: Alignment.center,
           width: 190.0,
