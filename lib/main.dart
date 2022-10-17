@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:got_app/pages/highscores.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:got_app/pages/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: createMaterialColor(const Color(0xFF394F49)),
         textTheme: GoogleFonts.bebasNeueTextTheme(),
       ),
-      home: const HighScorePage(),
+      home: const HomePage(),
     );
   }
 }
