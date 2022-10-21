@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:got_app/pages/gamerules.dart';
 import 'package:got_app/pages/highscores.dart';
 import 'package:got_app/widgets/fullscreendialog.dart';
 
@@ -11,10 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
-  final pages = const [
-    HomePage(),
-    HighScorePage(),
-  ];
+  final pages = const [HomePage(), HighScorePage(), GameRulesPage()];
 
   //BUILD
   @override
@@ -33,11 +31,13 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   width: 3,
                 ),
-                Text("rules with dialog")
+                Text("play game")
               ],
             ),
             onPressed: () {
-              //////////////------------------START: code for pop up screen rules
+              /*
+
+              //////////////------------------START: code for pop up screen rules: WORK IF WE DONT USE PAGE BUT ONLY POP UP
               showGeneralDialog(
                 context: context,
                 pageBuilder: (bc, ania, anis) {
@@ -52,8 +52,9 @@ class _HomePageState extends State<HomePage> {
               );
             }
             //////////////------------------END: code for pop up screen rules
-
-            ),
+            ///
+          */
+            }),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -69,6 +70,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.scoreboard), label: "Highscores"),
+          BottomNavigationBarItem(icon: Icon(Icons.rule), label: "rules"),
         ],
       ),
     );
