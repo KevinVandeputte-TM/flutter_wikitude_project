@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'User Management',
+      title: '',
       theme: ThemeData(
         primarySwatch: createMaterialColor(const Color(0xFF394F49)),
         textTheme: GoogleFonts.bebasNeueTextTheme(),
