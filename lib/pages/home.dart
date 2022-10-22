@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:got_app/pages/gamerules.dart';
 import 'package:got_app/pages/highscores.dart';
+import 'package:got_app/widgets/avatarselector.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,11 +15,17 @@ class _HomePageState extends State<HomePage> {
   final pages = const [HomePage(), HighScorePage(), GameRulesPage()];
   late TextEditingController usernameController;
   String _username = "";
+  late int _selectedavatar;
+
+  final _avatars = [
+    0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+  ];
 
   @override
   void initState(){
     super.initState();
     usernameController = TextEditingController();
+    _selectedavatar = _avatars[0];
   }
 
   @override
@@ -116,12 +123,23 @@ class _HomePageState extends State<HomePage> {
   Future<String?> openDialog() => showDialog<String>(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text("Start playing"),
-      content: TextField(
-        autofocus: false,
-        decoration: const InputDecoration(hintText: "Username"),
-        controller: usernameController,
-        onSubmitted: (_) => startgame(),
+      content: 
+      Column(
+        children: <Widget>[
+          const Text("Choose your avatar"),
+          AvatarSelectorWidget(
+            selectedAvatar: _selectedavatar, 
+            avatars: _avatars, 
+            onAvatarSelected: (avatar){
+              _onAvatarChanged(avatar);
+          }),
+          TextField(
+            autofocus: true,
+            decoration: const InputDecoration(hintText: "Username"),
+            controller: usernameController,
+            onSubmitted: (_) => startgame(),
+          ),
+        ],
       ),
       actions: [
         TextButton(
@@ -135,5 +153,11 @@ class _HomePageState extends State<HomePage> {
   void startgame(){
     Navigator.of(context).pop(usernameController.text);
     usernameController.clear();
+  }
+
+  void _onAvatarChanged(avatar){
+    setState(() {
+      _selectedavatar = avatar;
+    });
   }
 }
