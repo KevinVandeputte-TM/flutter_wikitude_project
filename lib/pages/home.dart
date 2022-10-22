@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:got_app/pages/gamerules.dart';
 import 'package:got_app/pages/highscores.dart';
-import 'package:got_app/widgets/fullscreendialog.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
