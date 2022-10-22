@@ -13,6 +13,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final pages = const [HomePage(), HighScorePage(), GameRulesPage()];
+  late TextEditingController usernameController;
+  String _username = "";
+
+  @override
+  void initState(){
+    super.initState();
+    usernameController = TextEditingController();
+  }
+
+  @override
+  void dispose(){
+    usernameController.dispose();
+    super.dispose();
+  }
 
   //BUILD
   @override
@@ -21,20 +35,39 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text("A game of thrones"),
       ),
-      body: Center(
-        child: ElevatedButton(
+      body: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              const Expanded(child: Text(
+                "Username: "
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text(_username),
+            ],
+          ),
+          ElevatedButton(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: const <Widget>[
                 Icon(Icons.play_arrow),
                 SizedBox(
-                  width: 3,
+                  width: 8,
                 ),
-                Text("play game")
+                Text("Play Game")
               ],
             ),
-            onPressed: () {
+            onPressed: () async{
+              // USERNAME POP UP
+              final username = await openDialog();
+              if (username == null || username.isEmpty) return;
+
+              setState(() {
+                _username = username;
+              });
+              
               /*
 
               //////////////------------------START: code for pop up screen rules: WORK IF WE DONT USE PAGE BUT ONLY POP UP
@@ -55,13 +88,16 @@ class _HomePageState extends State<HomePage> {
             ///
           */
             }),
-      ),
+        ]
+        ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) => {
-          _currentIndex = index,
-          Navigator.push(context,
+          if (index != _currentIndex){
+            _currentIndex = index,
+            Navigator.push(context,
               MaterialPageRoute(builder: (context) => pages[_currentIndex]))
+          }
         },
         items: const [
           BottomNavigationBarItem(
@@ -74,5 +110,31 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+
+  //DIALOG FOR USERNAME
+  Future<String?> openDialog() => showDialog<String>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text("Start playing"),
+      content: TextField(
+        autofocus: false,
+        decoration: const InputDecoration(hintText: "Username"),
+        controller: usernameController,
+        onSubmitted: (_) => startgame(),
+      ),
+      actions: [
+        TextButton(
+          onPressed: startgame,
+          child: const Text("Start game"),
+        )
+      ],
+    ),
+  );
+
+  void startgame(){
+    Navigator.of(context).pop(usernameController.text);
+    usernameController.clear();
   }
 }
