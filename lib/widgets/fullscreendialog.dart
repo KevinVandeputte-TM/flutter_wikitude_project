@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FullScreenDialog extends StatelessWidget {
@@ -18,6 +17,7 @@ class FullScreenDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Expanded(
+        // ignore: avoid_unnecessary_containers
         child: Container(
           //color:,
           child: Padding(
@@ -37,7 +37,7 @@ class FullScreenDialog extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text("Close"))
+                    child: const Text("Close"))
                 //////////////------------------END:
               ],
             ),

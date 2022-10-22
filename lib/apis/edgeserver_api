@@ -1,8 +1,26 @@
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'dart:convert'; //encoders and decoders for converting between different data representations, including JSON
 import '../models/user.dart';
 
 class EdgeserverApi {
-  static String server = 'dull-panda-56.loca.lt'; //to define
+  static String server = 'edge-service-kevinvandeputte-tm.cloud.okteto.net'; //to define
+
+
+
+ static Future<List<User>> fetchScore() async {
+
+
+
+    var url = Uri.https(server, '/scores');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((user) => User.fromJson(user)).toList();
+    } else {
+      throw Exception('Failed to load users');
+    }
+  }
 
 }

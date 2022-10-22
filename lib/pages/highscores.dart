@@ -1,29 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:got_app/widgets/listtile.dart';
+import 'package:got_app/apis/edgeserver_api';
 
-class HighScorePage extends StatelessWidget {
-  const HighScorePage({super.key});
+import '../models/user.dart';
+
+class HighScorePage extends StatefulWidget {
+  const HighScorePage({Key? key}) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() => _HighScorePageState();
+}
+
+//2.we need to create the state.
+class _HighScorePageState extends State {
+  //state-properties
+  List<User> userList = [];
+  int count = 0;
+  bool _isLoading = true; //bool variable created
+
+  @override
+  void initState() {
+    super.initState();
+    _getScores();
+  }
+
+  void _getScores() async {
+    EdgeserverApi.fetchScore().then((result) {
+      setState(() {
+        userList = result;
+        count = result.length;
+        _isLoading = false;
+      });
+    });
+  }
+
+  //3.the build() method that will actually create the UI
+  @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text("Highscores"),
       ),
-      body: Container(
-        child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (BuildContext context, int position) {
-            return const Card(
-              color: Colors.white,
-              elevation: 2.0,
-              child: ListTileWidget(
-                  avatar: "002-joker.png",
-                  titletext: "This is my title",
-                  subtitletext: "this is my subtitle"),
-            );
-          },
-        ),
+      body: ListView.builder(
+        itemCount: count,
+        itemBuilder: (BuildContext context, int position) {
+          return Card(
+            color: Color.fromARGB(255, 121, 68, 68),
+            elevation: 2.0,
+            child: ListTileWidget(
+                avatar: "${userList[position].avatarID}.png",
+                subtitletext: "Player: ${userList[position].name}",
+                titletext: "Score: ${userList[position].score}"),
+          );
+        },
       ),
     );
   }
