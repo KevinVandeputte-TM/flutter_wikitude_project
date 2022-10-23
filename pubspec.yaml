@@ -41,6 +41,9 @@ dependencies:
   google_fonts: ^3.0.1
   loading_animation_widget: 
 
+  augmented_reality_plugin_wikitude:
+    path: ./plugin/augmented_reality_plugin_wikitude/
+    
 dev_dependencies:
   flutter_test:
     sdk: flutter
