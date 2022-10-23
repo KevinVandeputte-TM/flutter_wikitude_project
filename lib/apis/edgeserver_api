@@ -22,4 +22,20 @@ class EdgeserverApi {
     }
   }
 
+    //Create User
+  static Future<User> createUser(String _username, int _avatarID) async {
+    //set up url
+    var url = Uri.https(server,"/user", {'username': _username, 'avatarID': _avatarID.toString()});
+
+    //POST
+    final http.Response response = await http.post(url);
+
+    //check response
+    if (response.statusCode == 200){
+      return User.fromJson(jsonDecode(response.body));
+    } else{
+      throw Exception("Failed to create user");
+    }
+  }
+
 }
