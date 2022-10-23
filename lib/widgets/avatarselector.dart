@@ -29,7 +29,7 @@ class AvatarSelectorWidget extends StatelessWidget{
         return DropdownMenuItem(
           value: e,
           child: Image(
-            image: AssetImage("assets/avatars/" + e.toString() +".png"),
+            image: AssetImage("assets/avatars/$e.png"),
             width: 40.0,
             height: 40.0
           )
