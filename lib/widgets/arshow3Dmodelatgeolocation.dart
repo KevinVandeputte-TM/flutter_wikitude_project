@@ -20,6 +20,7 @@ class _ARShow3DModelAtGeolocationWidgetState
   StartupConfiguration startupConfiguration = StartupConfiguration(
       cameraPosition: CameraPosition.BACK,
       cameraResolution: CameraResolution.AUTO);
+  //this feature is needed for multiple targets scanning
   List<String> features = ["image_tracking"];
 
   @override

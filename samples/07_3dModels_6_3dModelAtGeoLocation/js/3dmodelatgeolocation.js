@@ -11,9 +11,9 @@ var World = {
             the user.
         */
         var location = new AR.RelativeLocation(null, 5, 0, 2);
-
-        /* Next the model object is loaded. */
-        var modelEarth = new AR.Model("assets/earth.wt3", {
+        console.log("--------------------------ran")
+            /* Next the model object is loaded. */
+        var modelEarth = new AR.Model("assets/models/earth.wt3", {
             onError: World.onError,
             scale: {
                 x: 1,
@@ -23,10 +23,13 @@ var World = {
             rotate: {
                 x: 180,
                 y: 180
+            },
+            onClick: function() {
+                console.log('--------------------------------MODEL CLICKED');
             }
         });
 
-        var indicatorImage = new AR.ImageResource("assets/indi.png", {
+        var indicatorImage = new AR.ImageResource("assets/models/indi.png", {
             onError: World.onError
         });
 
