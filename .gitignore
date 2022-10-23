@@ -34,6 +34,7 @@ migrate_working_dir/
 /plugin/
 /plugins/
 
+
 # Symbolication related
 app.*.symbols
 

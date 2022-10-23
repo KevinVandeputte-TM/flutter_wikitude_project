@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:got_app/pages/gamerules.dart';
 import 'package:got_app/pages/highscores.dart';
 import 'package:got_app/widgets/avatarselector.dart';
+import 'package:got_app/apis/edgeserver_api';
 
 import 'argame.dart';
 
@@ -19,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   final pages = const [HomePage(), HighScorePage(), GameRulesPage()];
   late TextEditingController usernameController;
   String _username = "";
+  int _userID = 0;
   late int _selectedavatar;
 
   final _avatars = [
@@ -164,9 +166,19 @@ class _HomePageState extends State<HomePage> {
       );
 
   void startgame() {
-    //   Navigator.of(context).pop(usernameController.text);
-    usernameController.clear();
+  
+    setState(() {
+      _username = usernameController.text;
+    });
+    
+    //Create user
+    EdgeserverApi.createUser(_username, _selectedavatar).then((result){
+      _userID = result.userID;
+      // Navigator.of(context).pop(usernameController.text);
+      usernameController.clear();
+    });
 
+  
     debugPrint("Wij gaan starten");
     checkDeviceCompatibility().then((value) => {
           if (value.success)
