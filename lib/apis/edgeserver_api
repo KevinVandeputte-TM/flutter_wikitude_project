@@ -9,8 +9,7 @@ class EdgeserverApi {
 
  static Future<List<User>> fetchScore() async {
 
-
-
+    //URL
     var url = Uri.https(server, '/scores');
 
     final response = await http.get(url);
