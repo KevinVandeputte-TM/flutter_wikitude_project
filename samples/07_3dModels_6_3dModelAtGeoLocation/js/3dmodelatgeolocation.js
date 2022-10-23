@@ -13,7 +13,7 @@ var World = {
         var location = new AR.RelativeLocation(null, 5, 0, 2);
 
         /* Next the model object is loaded. */
-        var modelEarth = new AR.Model("assets/earth.wt3", {
+        var modelEarth = new AR.Model("assets/models/earth.wt3", {
             onError: World.onError,
             scale: {
                 x: 1,
@@ -26,7 +26,7 @@ var World = {
             }
         });
 
-        var indicatorImage = new AR.ImageResource("assets/indi.png", {
+        var indicatorImage = new AR.ImageResource("assets/models/indi.png", {
             onError: World.onError
         });
 
