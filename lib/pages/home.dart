@@ -167,17 +167,17 @@ class _HomePageState extends State<HomePage> {
 
   void startgame() {
   
-    setState(() {
+    /* setState(() {
       _username = usernameController.text;
-    });
+    }); */
     
     //Create user
-    EdgeserverApi.createUser(_username, _selectedavatar).then((result){
+   /*  EdgeserverApi.createUser(_username, _selectedavatar).then((result){
       _userID = result.userID;
       // Navigator.of(context).pop(usernameController.text);
       usernameController.clear();
     });
-
+ */
   
     debugPrint("Wij gaan starten");
     checkDeviceCompatibility().then((value) => {
