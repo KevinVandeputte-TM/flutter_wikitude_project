@@ -1,7 +1,12 @@
 var World = {
 
     init: function initFn() {
-        this.createModelAtLocation();
+        //this.createModelAtLocation();
+    },
+
+    locationChanged: function locationChanged(lat, lon, alt, acc){
+        console.log("----- WIKITUDE - LOCATION RECIEVED -------");
+        console.log("USER LOCATION: " + lat + ' ' + lon + ' ' + alt + acc);
     },
 
     createModelAtLocation: function createModelAtLocationFn() {
@@ -52,3 +57,5 @@ var World = {
 };
 
 World.init();
+
+AR.context.onLocationChanged = World.locationChanged;
