@@ -1,61 +1,100 @@
-var World = {
+    // coordinates({lat, lon, alt, acc})
 
-    init: function initFn() {
-        //this.createModelAtLocation();
-    },
+    var coordinates = [];
 
-    locationChanged: function locationChanged(lat, lon, alt, acc){
-        console.log("----- WIKITUDE - LOCATION RECIEVED -------");
-        console.log("USER LOCATION: " + lat + ' ' + lon + ' ' + alt + acc);
-    },
+    var World = {
 
-    createModelAtLocation: function createModelAtLocationFn() {
+        objectsNames: [
+            { 'name': 'earth', 'relativelat': 1, 'relativelon': 1, 'relativeacc': 1 },
+            { 'name': 'earth', 'relativelat': -1, 'relativelon': -1, 'relativeacc': 1 }
+        ],
 
-        /*
-            First a location where the model should be displayed will be defined. This location will be relativ to
-            the user.
-        */
-        var location = new AR.RelativeLocation(null, 5, 0, 2);
-        console.log("--------------------------ran")
-            /* Next the model object is loaded. */
-        var modelEarth = new AR.Model("assets/models/earth.wt3", {
-            onError: World.onError,
-            scale: {
-                x: 1,
-                y: 1,
-                z: 1
-            },
-            rotate: {
-                x: 180,
-                y: 180
-            },
-            onClick: function() {
-                console.log('--------------------------------MODEL CLICKED');
+
+        init: function initFn() {
+            console.log("----- WIKITUDE ----- INIT  ");
+            //    const myTimeout = setTimeout(
+
+            console.log("----- WIKITUDE ----- END INIT ");
+
+        },
+
+
+
+
+        locationChanged: function locationChanged(lat, lon, alt, acc) {
+            console.log("----- WIKITUDE locationChanged USER LOCATION: " + lat + ' ' + lon + ' ' + alt + acc);
+            // coordinates.push({ lat, lon, alt, acc })
+            coordinates.push({ 'lat': lat, "lon": lon, "acc": acc })
+            console.log("----- WIKITUDE locationChanged  added values in coordinates array " + coordinates[coordinates.length - 1].lat)
+
+            if (coordinates.length == 1) {
+                console.log("----- WIKITUDE CREATE MODELS")
+                console.log(World.objectsNames)
+                World.objectsNames.forEach(element => {
+                        World.createModelAtLocation(element.name, element.relativelat, element.relativelon, element.relativeacc);
+                        console.log("----- WIKITUDE ----- made object  " + element.name);
+                    })
+                    //, 5000);
+
             }
-        });
+        },
 
-        var indicatorImage = new AR.ImageResource("assets/models/indi.png", {
-            onError: World.onError
-        });
+        createModelAtLocation: function createModelAtLocationFn(modelname, rel_latitide, rel_longitude) {
+            console.log('-------WIKITUDE: CreateModel')
 
-        var indicatorDrawable = new AR.ImageDrawable(indicatorImage, 0.1, {
-            verticalAnchor: AR.CONST.VERTICAL_ANCHOR.TOP
-        });
+            // var location = new AR.RelativeLocation(null, northing, easting, altitudedelta);
 
-        /* Putting it all together the location and 3D model is added to an AR.GeoObject. */
-        this.geoObject = new AR.GeoObject(location, {
-            drawables: {
-                cam: [modelEarth],
-                indicator: [indicatorDrawable]
-            }
-        });
-    },
 
-    onError: function onErrorFn(error) {
-        alert(error);
-    }
-};
+            // //plaatsen tov absolute waardes bij opstart spel
 
-World.init();
+            var location = new AR.GeoLocation(
+                parseFloat(coordinates[0].lat + (rel_latitide / 10000)), // about 1 meter easting
+                parseFloat(coordinates[0].lon + (rel_longitude / 10000)), //about 2 meter northing.
+                1 //altitude
+            );
 
-AR.context.onLocationChanged = World.locationChanged;
+
+
+            console.log("-------WIKITUDE: --------------------------ran createModel, ")
+                /* Next the model object is loaded. */
+            var modelEarth = new AR.Model("assets/models/" + modelname + ".wt3", {
+                onError: World.onError,
+                scale: {
+                    x: 10,
+                    y: 10,
+                    z: 10
+                },
+                rotate: {
+                    x: 180,
+                    y: 180
+                },
+                onClick: function() {
+                    console.log('-------WIKITUDE: --------------------------------MODEL CLICKED' + modelname);
+                }
+            });
+
+            // var indicatorImage = new AR.ImageResource("assets/models/indi.png", {
+            //     onError: World.onError
+            // });
+
+            // var indicatorDrawable = new AR.ImageDrawable(indicatorImage, 0.1, {
+            //     verticalAnchor: AR.CONST.VERTICAL_ANCHOR.TOP
+            // });
+
+            /* Putting it all together the location and 3D model is added to an AR.GeoObject. */
+            this.geoObject = new AR.GeoObject(location, {
+                drawables: {
+                    cam: [modelEarth],
+                    // indicator: [indicatorDrawable]
+                }
+            });
+        },
+
+        onError: function onErrorFn(error) {
+            alert(error);
+        }
+    };
+
+    World.init();
+
+    AR.context.onLocationChanged = World.locationChanged;
