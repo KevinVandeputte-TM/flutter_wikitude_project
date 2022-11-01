@@ -49,6 +49,9 @@
                 },
                 onClick: function() {
                     console.log('-------WIKITUDE: --------------------------------MODEL CLICKED' + modelname);
+                    AR.platform.sendJSONObject({
+                        "modelname": modelname
+                    });
                 }
             });
 
