@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:augmented_reality_plugin_wikitude/architect_widget.dart';
 import 'package:augmented_reality_plugin_wikitude/startupConfiguration.dart';
+import 'package:augmented_reality_plugin_wikitude/wikitude_plugin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:got_app/models/armodelresponse.dart';
+import 'package:got_app/pages/question.dart';
 
 //SEE https://www.wikitude.com/external/doc/documentation/latest/android/3dmodels.html#3dModelAtGeoLocation
 class ARShow3DModelAtGeolocationWidget extends StatefulWidget {
@@ -161,6 +165,9 @@ class _ARShow3DModelAtGeolocationWidgetState
         onLoadSuccess,
         onLoadFailed);
     architectWidget.resume();
+    architectWidget.setJSONObjectReceivedCallback(
+      (result) => OnJSONObjectReceived(result)
+    );
   }
 
   Future<void> onLoadSuccess() async {
@@ -170,5 +177,16 @@ class _ARShow3DModelAtGeolocationWidgetState
   Future<void> onLoadFailed(String error) async {
     debugPrint("---*FLUTTER Failed to load Architect World");
     debugPrint(error);
+  }
+
+  void OnJSONObjectReceived(Map<String, dynamic> jsonObject) async{
+    var clickedmodel = ARModelResponse.fromJson(jsonObject);
+    await positionStream.cancel();
+    dispose();
+
+    // ignore: use_build_context_synchronously
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => QuestionPage(modelname: clickedmodel.modelname)));
   }
 }
