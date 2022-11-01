@@ -38,4 +38,40 @@ class EdgeserverApi {
     }
   }
 
+
+
+//QUESTIONS
+
+//GET/questions/
+   static Future<List<Game>> fetchQuestions() async {
+
+    //URL
+    var url = Uri.https(server, '/questions');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((game) => Game.fromJson(game)).toList();
+    } else {
+      throw Exception('Failed to load questions');
+    }
+  }
+
+
+//GET/questions/
+   static Future<List<Game>> fetchQuestions() async {
+
+    //URL
+    var url = Uri.https(server, '/questions');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((game) => Game.fromJson(game)).toList();
+    } else {
+      throw Exception('Failed to load questions');
+    }
+  }
 }
