@@ -7,6 +7,9 @@ class Game {
   String correctanswer;
   String answertwo;
   String answerthree;
+  int scoreOffensive;
+  int scoreDefensive;
+  String objectName;
 
   Game({
     required this.gameId,
@@ -17,6 +20,9 @@ class Game {
     required this.correctanswer,
     required this.answertwo,
     required this.answerthree,
+    required this.scoreDefensive,
+    required this.scoreOffensive,
+    required this.objectName,
   });
 
   factory Game.fromJson(Map<String, dynamic> json) {
@@ -29,6 +35,9 @@ class Game {
       correctanswer: json['correctanswer'],
       answertwo: json['answertwo'],
       answerthree: json['answerthree'],
+      scoreDefensive: json['scoreDefensive'],
+      scoreOffensive: json['scoreOffensive'],
+      objectName: json['objectName'],
     );
   }
 
@@ -41,5 +50,8 @@ class Game {
         'correctanswer': correctanswer,
         'answertwo': answertwo,
         'answerthree': answerthree,
+        'scoreDefensive': scoreDefensive,
+        'scoreOffensive': scoreOffensive,
+        'objectName': objectName,
       };
 }
