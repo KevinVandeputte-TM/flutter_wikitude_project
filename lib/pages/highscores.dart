@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:got_app/widgets/listtile.dart';
 import 'package:got_app/apis/edgeserver_api';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:got_app/widgets/loadingspinner.dart';
 
 import '../models/user.dart';
 
@@ -39,12 +39,7 @@ class _HighScorePageState extends State {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return Center(
-        child: LoadingAnimationWidget.fourRotatingDots(
-          color: const Color.fromRGBO(74, 82, 89, 100),
-          size: 200,
-        ),
-      );
+      return const LoadingSpinnerWidget();
     }
     return Scaffold(
       appBar: AppBar(

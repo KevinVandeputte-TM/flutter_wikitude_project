@@ -1,13 +1,14 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert'; //encoders and decoders for converting between different data representations, including JSON
 import '../models/user.dart';
+import '../models/game.dart';
 
 class EdgeserverApi {
   static String server = 'edge-service-kevinvandeputte-tm.cloud.okteto.net'; //to define
 
 
-
- static Future<List<User>> fetchScore() async {
+  /* FETCH HIGHSCORES */
+  static Future<List<User>> fetchScore() async {
 
     //URL
     var url = Uri.https(server, '/scores');
@@ -22,7 +23,8 @@ class EdgeserverApi {
     }
   }
 
-    //Create User
+  
+  /* CREATE NEW USER */
   static Future<User> createUser(String _username, int _avatarID) async {
     //set up url
     var url = Uri.https(server,"/user", {'username': _username, 'avatarID': _avatarID.toString()});
@@ -42,6 +44,20 @@ class EdgeserverApi {
 
 //QUESTIONS
 
+/* GET QUESTIONS BY MODEL NAME */
+static Future<Game>fetchQuestionByModelName(String modelname) async{
+  //Set up url
+  var url = Uri.https(server, "/question/" + modelname);
+  //GET
+  final response = await http.get(url);
+  //Return
+  if(response.statusCode == 200){
+    return Game.fromJson(jsonDecode(response.body));
+  } else{
+    throw Exception("Failed to load question");
+  }
+}
+
 //GET/questions/
    static Future<List<Game>> fetchQuestions() async {
 
@@ -60,18 +76,19 @@ class EdgeserverApi {
 
 
 //GET/questions/
-   static Future<List<Game>> fetchQuestions() async {
+  //  static Future<List<Game>> fetchQuestions() async {
 
-    //URL
-    var url = Uri.https(server, '/questions');
+  //   //URL
+  //   var url = Uri.https(server, '/questions');
 
-    final response = await http.get(url);
+  //   final response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((game) => Game.fromJson(game)).toList();
-    } else {
-      throw Exception('Failed to load questions');
-    }
-  }
+  //   if (response.statusCode == 200) {
+  //     List jsonResponse = json.decode(response.body);
+  //     return jsonResponse.map((game) => Game.fromJson(game)).toList();
+  //   } else {
+  //     throw Exception('Failed to load questions');
+  //   }
+  // }
+
 }

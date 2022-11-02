@@ -3,6 +3,7 @@ import 'package:augmented_reality_plugin_wikitude/wikitude_response.dart';
 import 'package:flutter/material.dart';
 import 'package:got_app/pages/gamerules.dart';
 import 'package:got_app/pages/highscores.dart';
+import 'package:got_app/pages/question.dart';
 import 'package:got_app/widgets/avatarselector.dart';
 import 'package:got_app/apis/edgeserver_api';
 
@@ -111,6 +112,24 @@ class _HomePageState extends State<HomePage> {
                 _username = username;
               });
             }),
+// --------- ELEVATED BUTTON FOR TESTING PURPOSES ONLY -------------
+        ElevatedButton(
+          onPressed: (() {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const QuestionPage(modelname: "EXTRA_PotionVial",)));
+          }),
+          child: Row(
+            mainAxisAlignment:  MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: const <Widget>[
+              SizedBox(
+                width: 10,
+              ),
+              Text("Test vraag")
+            ],
+          )),
+//-------END TEST ELEVATED BUTTON ------------------------
       ]),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
