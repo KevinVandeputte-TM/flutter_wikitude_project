@@ -1,7 +1,7 @@
 class Game {
   int gameId;
   String question;
-  String theme;
+  int level;
   double x;
   double y;
   String correctanswer;
@@ -14,7 +14,7 @@ class Game {
   Game({
     required this.gameId,
     required this.question,
-    required this.theme,
+    required this.level,
     required this.x,
     required this.y,
     required this.correctanswer,
@@ -29,7 +29,7 @@ class Game {
     return Game(
       gameId: json['gameId'],
       question: json['question'],
-      theme: json['theme'],
+      level: json['level'],
       x: json['x'],
       y: json['y'],
       correctanswer: json['correctanswer'],
@@ -44,7 +44,7 @@ class Game {
   Map<String, dynamic> toJson() => {
         'gameId': gameId,
         'question': question,
-        'theme': theme,
+        'level': level,
         'x': x,
         'y': y,
         'correctanswer': correctanswer,
