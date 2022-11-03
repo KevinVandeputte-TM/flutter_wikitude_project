@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:got_app/models/user.dart';
+
 
 class UserProvider extends ChangeNotifier{
   int _userid = 0;
