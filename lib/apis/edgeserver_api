@@ -4,9 +4,9 @@ import '../models/user.dart';
 import '../models/game.dart';
 
 class EdgeserverApi {
+  //SERVER STRING
   static String server = 'edge-service-kevinvandeputte-tm.cloud.okteto.net'; //to define
-
-
+  
   /* FETCH HIGHSCORES */
   static Future<List<User>> fetchScore() async {
 
@@ -23,8 +23,9 @@ class EdgeserverApi {
     }
   }
 
+  /* USERS */
   
-  /* CREATE NEW USER */
+  // --- CREATE NEW USER --- //
   static Future<User> createUser(String _username, int _avatarID) async {
     //set up url
     var url = Uri.https(server,"/user", {'username': _username, 'avatarID': _avatarID.toString()});
@@ -40,26 +41,48 @@ class EdgeserverApi {
     }
   }
 
+  // --- UPDATE USER --- //
+  static Future<bool> updateUser(User user) async{
+    //Set up url
+    var url = Uri.https(server, "/user");
 
+    //PUT
+    final http.Response response = await http.put(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(user),
+    );
 
-//QUESTIONS
+    //Return bool depending on succes of put request
+    if(response.statusCode == 200){
+      return true;
+    } else {
+      return false;
+    }
 
-/* GET QUESTIONS BY MODEL NAME */
-static Future<Game>fetchQuestionByModelName(String modelname) async{
-  //Set up url
-  var url = Uri.https(server, "/question/" + modelname);
-  //GET
-  final response = await http.get(url);
-  //Return
-  if(response.statusCode == 200){
-    return Game.fromJson(jsonDecode(response.body));
-  } else{
-    throw Exception("Failed to load question");
   }
-}
 
-//GET/questions/
-   static Future<List<Game>> fetchQuestions() async {
+
+
+  /* QUESTIONS */
+  // --- GET QUESTIONS BY MODEL NAME --- //
+  static Future<Game>fetchQuestionByModelName(String modelname) async{
+    //Set up url
+    var url = Uri.https(server, "/question/" + modelname);
+    //GET
+    final response = await http.get(url);
+    //Return
+    if(response.statusCode == 200){
+      return Game.fromJson(jsonDecode(response.body));
+    } else{
+      throw Exception("Failed to load question");
+    }
+  }
+
+  // --- GET ALL QUESTIONS --- // 
+  static Future<List<Game>> fetchQuestions() async {
 
     //URL
     var url = Uri.https(server, '/questions');
@@ -73,7 +96,6 @@ static Future<Game>fetchQuestionByModelName(String modelname) async{
       throw Exception('Failed to load questions');
     }
   }
-
 
 //GET/questions/
   //  static Future<List<Game>> fetchQuestions() async {
