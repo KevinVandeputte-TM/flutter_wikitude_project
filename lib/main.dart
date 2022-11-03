@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:got_app/pages/home.dart';
+import 'package:got_app/providers/gameprovider.dart';
 import 'package:got_app/providers/userprovider.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +9,7 @@ void main() {
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => GameProvider()),
     ],
     child: const MyApp(),
     ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:got_app/pages/gamerules.dart';
 import 'package:got_app/pages/highscores.dart';
 import 'package:got_app/pages/question.dart';
+import 'package:got_app/providers/gameprovider.dart';
 import 'package:got_app/providers/userprovider.dart';
 import 'package:got_app/widgets/avatarselector.dart';
 import 'package:got_app/apis/edgeserver_api';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:got_app/models/game.dart';
+import 'package:got_app/providers/gameprovider.dart';
 import 'package:got_app/providers/userprovider.dart';
 import 'package:got_app/widgets/answer.dart';
 import 'package:got_app/widgets/loadingspinner.dart';
@@ -70,7 +71,7 @@ class _QuestionPageState extends State<QuestionPage>{
               padding: EdgeInsets.only(bottom: _padding, top: _padding),
               child: Text(
                 // ignore: prefer_interpolation_to_compose_strings
-                "Score: " + context.watch<UserProvider>().score.toString() ,
+                "Score: " + context.watch<UserProvider>().score.toString(),
                 textScaleFactor: 3,
               ),
             ),
