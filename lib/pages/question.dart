@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:got_app/models/game.dart';
+import 'package:got_app/providers/userprovider.dart';
 import 'package:got_app/widgets/answer.dart';
 import 'package:got_app/widgets/loadingspinner.dart';
+import 'package:provider/provider.dart';
 import '../apis/edgeserver_api';
 
 class QuestionPage extends StatefulWidget{
@@ -63,6 +65,14 @@ class _QuestionPageState extends State<QuestionPage>{
           children: <Widget>[
             Container(
               height: 80,
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: _padding, top: _padding),
+              child: Text(
+                // ignore: prefer_interpolation_to_compose_strings
+                "Score: " + context.watch<UserProvider>().score.toString() ,
+                textScaleFactor: 3,
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(bottom: _padding, top: _padding),

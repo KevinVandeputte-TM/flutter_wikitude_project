@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:got_app/pages/gamerules.dart';
 import 'package:got_app/pages/highscores.dart';
 import 'package:got_app/pages/question.dart';
+import 'package:got_app/providers/userprovider.dart';
 import 'package:got_app/widgets/avatarselector.dart';
 import 'package:got_app/apis/edgeserver_api';
+import 'package:provider/provider.dart';
 
 import 'argame.dart';
 
@@ -21,7 +23,6 @@ class _HomePageState extends State<HomePage> {
   final pages = const [HomePage(), HighScorePage(), GameRulesPage()];
   late TextEditingController usernameController;
   String _username = "";
-  int _userID = 0;
   late int _selectedavatar;
 
   final _avatars = [
@@ -88,7 +89,7 @@ class _HomePageState extends State<HomePage> {
               child: Text("Username: "),
             ),
             const SizedBox(width: 12),
-            Text(_username),
+            Text(context.read<UserProvider>().username),
           ],
         ),
         ElevatedButton(
@@ -185,42 +186,41 @@ class _HomePageState extends State<HomePage> {
       );
 
   void startgame() {
-  
-    /* setState(() {
+    setState(() {
       _username = usernameController.text;
-    }); */
+    });
     
     //Create user
-   /*  EdgeserverApi.createUser(_username, _selectedavatar).then((result){
-      _userID = result.userID;
-      // Navigator.of(context).pop(usernameController.text);
+    EdgeserverApi.createUser(_username, _selectedavatar).then((result){
+      /* UPDATE PROVIDER */
+      context.read<UserProvider>().setUserID(result.userID);
+      context.read<UserProvider>().setUsername(result.name);
+      context.read<UserProvider>().setAvatarID(result.avatarID);
+      context.read<UserProvider>().setScore(result.score);
+      Navigator.of(context).pop(usernameController.text);
       usernameController.clear();
     });
- */
   
-    debugPrint("Wij gaan starten");
-    checkDeviceCompatibility().then((value) => {
-          if (value.success)
-            {
-              requestARPermissions().then((value) => {
-                    if (value.success)
-                      {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ArGamePage()),
-                        )
-                      }
-                    else
-                      {
-                        debugPrint("AR permissions denied"),
-                        debugPrint(value.message)
-                      }
-                  })
-            }
-          else
-            {debugPrint("Device incompatible"), debugPrint(value.message)}
-        });
+    // debugPrint("Wij gaan starten");
+    // checkDeviceCompatibility().then((value) => {
+    //   if (value.success) {
+    //     requestARPermissions().then((value) => {
+    //       if (value.success) {
+    //         Navigator.push(
+    //           context,
+    //           MaterialPageRoute(
+    //             builder: (context) => const ArGamePage()
+    //           ),
+    //         )
+    //       } else {
+    //         debugPrint("AR permissions denied"),
+    //         debugPrint(value.message)
+    //       }
+    //     })
+    //   } else {
+    //     debugPrint("Device incompatible"), debugPrint(value.message)
+    //   }
+    // });
   }
 
   void _onAvatarChanged(avatar) {
