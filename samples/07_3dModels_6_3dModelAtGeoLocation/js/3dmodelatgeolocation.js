@@ -5,7 +5,7 @@
 
         //objectsnames => contained by API call
         objectsNames: [
-            { 'name': 'DEF_RoundShield', 'relativelat': 1, 'relativelon': 1, },
+            { 'name': 'OFF_BlackFyre_Sword', 'relativelat': 1, 'relativelon': 1, },
 
         ],
 
@@ -43,9 +43,8 @@
             var modelEarth = new AR.Model("assets/models/" + modelname + ".wt3", {
                 onError: World.onError,
                 scale: {
-                    x: 0.1,
-                    y: 0.1,
-                    z: 0.1
+                    x: 1,
+                    y: 1
                 },
                 onClick: function() {
                     console.log('-------WIKITUDE: --------------------------------MODEL CLICKED' + modelname);
@@ -72,13 +71,10 @@
 
         //------From Flutter to Wiki => Give information for models
         getModelNames: function getModelNamesFn(objectname, relLatitude, relLongitude) {
-            this.objectsNames.push({ 'name': objectname, 'relativelat': relLatitude, 'relativelon': relLongitude }, )
+            //    this.objectsNames.push({ 'name': objectname, 'relativelat': relLatitude, 'relativelon': relLongitude }, )
         },
         //------From Flutter to Wiki => Give information for models
         setStartCoordinates: function setStartCoordinatesFn(lat, lon, alt, acc) {
-            // console.log(lat)
-            // console.log(lon)
-            // console.log(alt)
             this.startCoordinates = { 'lat': lat, "lon": lon, "alt": alt, "acc": acc }
         }
     };

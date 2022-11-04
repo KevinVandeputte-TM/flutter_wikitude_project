@@ -7,16 +7,22 @@ class GameProvider extends ChangeNotifier {
   final List _collectedItems = [];
   final List<ModelItem> _modelItems = [];
   late StartCoordinates _absoluteStartCoordinates;
-  int _level = 1;
+  int _level = 2;
 
   List get collectedItems => _collectedItems;
   List get modelItems => _modelItems;
   get absoluteStartCoordinates => _absoluteStartCoordinates;
   int get level => _level;
 
-  void setCollectedItems(String item) {
-    _collectedItems.add(item);
-    _modelItems.remove(item);
+  void setCollectedItems(String objectname) {
+    _collectedItems.add(objectname);
+    //if only one item is remaining in the modellist => level +1
+    if (_modelItems.length == 1) {
+      _modelItems.remove(objectname);
+      setLevel();
+    } else {
+      _modelItems.remove(objectname);
+    }
     notifyListeners();
   }
 
