@@ -6,7 +6,7 @@ import 'package:got_app/widgets/loadingspinner.dart';
 import 'package:provider/provider.dart';
 import '../apis/edgeserver_api';
 
-class QuestionPage extends StatefulWidget{
+class QuestionPage extends StatefulWidget {
   // modelname coming form wikitude
   final String modelname;
 
@@ -15,10 +15,9 @@ class QuestionPage extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() => _QuestionPageState();
-
 }
 
-class _QuestionPageState extends State<QuestionPage>{
+class _QuestionPageState extends State<QuestionPage> {
   final double _padding = 15.0;
   //State variable to contain the question.
   Game? game;
@@ -32,7 +31,7 @@ class _QuestionPageState extends State<QuestionPage>{
     _getQuestion(widget.modelname);
   }
 
-  void _getQuestion(String modelname){
+  void _getQuestion(String modelname) {
     //ADD API CALL TO GET QUESTION -- ADD TO edgeserver_API as well
     EdgeserverApi.fetchQuestionByModelName(modelname).then((result) {
       // Set state: Result of API call to question.
@@ -49,53 +48,49 @@ class _QuestionPageState extends State<QuestionPage>{
     });
   }
 
-
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     if (_isLoading) {
       return const LoadingSpinnerWidget();
     }
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Collecting item"),
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 80,
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: _padding, top: _padding),
-              child: Text(
-                // ignore: prefer_interpolation_to_compose_strings
-                "Score: " + context.watch<UserProvider>().score.toString(),
-                textScaleFactor: 3,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: _padding, top: _padding),
-              child: Text(
-                _question,
-                textScaleFactor: 3,
-              ),
-            ),
-            /* RETURNING ANSWERWIDGET FOR EVERY ANSWER */
-            ...(_answers).map((answer){
-              return AnswerWidget(
-                answer: answer, 
-                onAnswer: (answer){
-                  _checkAnswer(answer);
-                }
-              );
-            }),
-          ],
+        appBar: AppBar(
+          title: const Text("Collecting item"),
         ),
-      )
-    );
+        body: Container(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 80,
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: _padding, top: _padding),
+                child: Text(
+                  // ignore: prefer_interpolation_to_compose_strings
+                  "Score: " + context.watch<UserProvider>().score.toString(),
+                  textScaleFactor: 3,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: _padding, top: _padding),
+                child: Text(
+                  _question,
+                  textScaleFactor: 3,
+                ),
+              ),
+              /* RETURNING ANSWERWIDGET FOR EVERY ANSWER */
+              ...(_answers).map((answer) {
+                return AnswerWidget(
+                    answer: answer,
+                    onAnswer: (answer) {
+                      _checkAnswer(answer);
+                    });
+              }),
+            ],
+          ),
+        ));
   }
-
 
   /* CHECK ANSWER */
   void _checkAnswer(String answer){
@@ -108,5 +103,4 @@ class _QuestionPageState extends State<QuestionPage>{
       }
 
   }
-
 }

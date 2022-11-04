@@ -97,20 +97,19 @@ class EdgeserverApi {
     }
   }
 
-//GET/questions/
-  //  static Future<List<Game>> fetchQuestions() async {
 
-  //   //URL
-  //   var url = Uri.https(server, '/questions');
+//GET/questionsbylevel/
+   static Future<List<Game>> fetchModelsByLevel(int level) async {
+    var url = Uri.https(server, '/questionsbylevel/'+ level.toString() );
 
-  //   final response = await http.get(url);
+    final response = await http.get(url);
 
-  //   if (response.statusCode == 200) {
-  //     List jsonResponse = json.decode(response.body);
-  //     return jsonResponse.map((game) => Game.fromJson(game)).toList();
-  //   } else {
-  //     throw Exception('Failed to load questions');
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((game) => Game.fromJson(game)).toList();
+    } else {
+      throw Exception('Failed to load questions');
+    }
+  }
 
 }

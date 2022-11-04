@@ -8,7 +8,7 @@ import 'package:got_app/pages/question.dart';
 import 'package:got_app/providers/gameprovider.dart';
 import 'package:got_app/providers/userprovider.dart';
 import 'package:got_app/widgets/avatarselector.dart';
-import 'package:got_app/apis/edgeserver_api';
+
 import 'package:provider/provider.dart';
 
 import 'argame.dart';
@@ -67,6 +67,11 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<GameProvider>(context, listen: false).fetchModelsfromApi();
+    });
+
     usernameController = TextEditingController();
     _selectedavatar = _avatars[0];
   }
@@ -117,21 +122,24 @@ class _HomePageState extends State<HomePage> {
             }),
 // --------- ELEVATED BUTTON FOR TESTING PURPOSES ONLY -------------
         ElevatedButton(
-          onPressed: (() {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const QuestionPage(modelname: "EXTRA_PotionVial",)));
-          }),
-          child: Row(
-            mainAxisAlignment:  MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: const <Widget>[
-              SizedBox(
-                width: 10,
-              ),
-              Text("Test vraag")
-            ],
-          )),
+            onPressed: (() {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const QuestionPage(
+                            modelname: "EXTRA_PotionVial",
+                          )));
+            }),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                SizedBox(
+                  width: 10,
+                ),
+                Text("Test vraag")
+              ],
+            )),
 //-------END TEST ELEVATED BUTTON ------------------------
       ]),
       bottomNavigationBar: BottomNavigationBar(
@@ -191,7 +199,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _username = usernameController.text;
     });
-    
+
     //Create user
     EdgeserverApi.createUser(_username, _selectedavatar).then((result){
       /* UPDATE PROVIDER */
@@ -201,27 +209,32 @@ class _HomePageState extends State<HomePage> {
       //Clear usernamecontroller
       usernameController.clear();
     });
-  
-    // debugPrint("Wij gaan starten");
-    // checkDeviceCompatibility().then((value) => {
-    //   if (value.success) {
-    //     requestARPermissions().then((value) => {
-    //       if (value.success) {
-    //         Navigator.push(
-    //           context,
-    //           MaterialPageRoute(
-    //             builder: (context) => const ArGamePage()
-    //           ),
-    //         )
-    //       } else {
-    //         debugPrint("AR permissions denied"),
-    //         debugPrint(value.message)
-    //       }
-    //     })
-    //   } else {
-    //     debugPrint("Device incompatible"), debugPrint(value.message)
-    //   }
-    // });
+
+    //model en provider opvullen
+
+    debugPrint("Wij gaan starten");
+    checkDeviceCompatibility().then((value) => {
+          if (value.success)
+            {
+              requestARPermissions().then((value) => {
+                    if (value.success)
+                      {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ArGamePage()),
+                        )
+                      }
+                    else
+                      {
+                        debugPrint("AR permissions denied"),
+                        debugPrint(value.message)
+                      }
+                  })
+            }
+          else
+            {debugPrint("Device incompatible"), debugPrint(value.message)}
+        });
   }
 
   void _onAvatarChanged(avatar) {
