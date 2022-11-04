@@ -106,8 +106,7 @@ class _QuestionPageState extends State<QuestionPage> {
       // if given correct answer update User in DB and Provider. This is handled by de UserProvider
       if(answer == game?.correctanswer){
         // UPDATE GAME = USER IN PROVIDER AND DB + MODEL AND COLLECTEDITEMS IN GAME PROVIDER
-        context.read<UserProvider>().updateUser(game?.scoreOffensive, game?.scoreDefensive);
-        context.read<GameProvider>().setCollectedItems(widget.modelname);
+        context.read<UserProvider>().updateGame(context, game?.scoreOffensive, game?.scoreDefensive, widget.modelname);
       } else {
         print("YOU'RE STUPID, BOY!");
       }

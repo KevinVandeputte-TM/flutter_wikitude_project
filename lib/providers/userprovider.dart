@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:got_app/models/user.dart';
 import 'package:got_app/apis/edgeserver_api';
+import 'package:got_app/providers/gameprovider.dart';
+import 'package:provider/provider.dart';
 
 
 
 class UserProvider extends ChangeNotifier{
   int _userid = 28;
   int _avatarID = 0;
-  int _score = 15;
+  int _score = 30;
   String _username = "userdata";
   String _email = "userdata@test.com";  
-
   
   //GETTERS
   int get userid => _userid;
@@ -53,7 +54,9 @@ class UserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  void updateUser(int? scoreOff, int? scoreDef){
+  /* UPDATE THE PROVIDERS AND DB AFTER CORRECT ANSWER */
+  void updateGame(BuildContext context, int? scoreOff, int? scoreDef, String modelname){
+    GameProvider gameProvider = Provider.of<GameProvider>(context ,listen: false);
     //Calculate total score of user
     int total = _score + scoreOff! + scoreDef!;
     // The service needs an user object. Let's create one with score as total
@@ -65,6 +68,8 @@ class UserProvider extends ChangeNotifier{
       if(result == true){
         //update the score
         setScore(total);
+        // Adjust the game settings when the user is updated => See GameProvider method
+        gameProvider.setCollectedItems(modelname);
         // else display error message?
       } else {
         //TO DO
