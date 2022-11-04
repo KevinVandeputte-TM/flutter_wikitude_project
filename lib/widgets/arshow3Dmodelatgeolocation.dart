@@ -117,7 +117,7 @@ class _ARShow3DModelAtGeolocationWidgetState
         //2. load the modelitems in wikitude
         for (ModelItem item in context.read<GameProvider>().modelItems) {
           architectWidget.callJavascript(
-              'World.getModelNames("${item.objectname} ","${item.relativeLat}", "${item.relativeLon}")');
+              'World.getModelNames("${item.objectname}","${item.relativeLat}", "${item.relativeLon}")');
         }
       } else {
         return Future.error(
