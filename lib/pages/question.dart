@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:got_app/models/flutterwikitudeexchange.dart';
 import 'package:got_app/models/game.dart';
+import 'package:got_app/providers/gameprovider.dart';
 import 'package:got_app/providers/userprovider.dart';
 import 'package:got_app/widgets/answer.dart';
 import 'package:got_app/widgets/loadingspinner.dart';
@@ -19,7 +21,7 @@ class QuestionPage extends StatefulWidget {
 
 class _QuestionPageState extends State<QuestionPage> {
   final double _padding = 15.0;
-  //State variable to contain the question.
+  //local state variable to contain the question.
   Game? game;
   String _question = "";
   late final List<String> _answers = ["", "", ""];
@@ -68,6 +70,14 @@ class _QuestionPageState extends State<QuestionPage> {
                 padding: EdgeInsets.only(bottom: _padding, top: _padding),
                 child: Text(
                   // ignore: prefer_interpolation_to_compose_strings
+                  "Collected items: " + context.watch<GameProvider>().collectedItems.toString(),
+                  textScaleFactor: 3,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: _padding, top: _padding),
+                child: Text(
+                  // ignore: prefer_interpolation_to_compose_strings
                   "Score: " + context.watch<UserProvider>().score.toString(),
                   textScaleFactor: 3,
                 ),
@@ -96,8 +106,8 @@ class _QuestionPageState extends State<QuestionPage> {
   void _checkAnswer(String answer){
       // if given correct answer update User in DB and Provider. This is handled by de UserProvider
       if(answer == game?.correctanswer){
-        // UPDATE USER IN PROVIDER AND DB
-        context.read<UserProvider>().updateUser(game?.scoreOffensive, game?.scoreDefensive);
+        // UPDATE GAME = USER IN PROVIDER AND DB + MODEL AND COLLECTEDITEMS IN GAME PROVIDER
+        context.read<UserProvider>().updateGame(game?.scoreOffensive, game?.scoreDefensive, widget.modelname);
       } else {
         print("YOU'RE STUPID, BOY!");
       }

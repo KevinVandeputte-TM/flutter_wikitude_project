@@ -51,7 +51,7 @@ class UserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  void updateUser(int? scoreOff, int? scoreDef){
+  void updateGame(int? scoreOff, int? scoreDef, String item){
     //Calculate total score of user
     int total = _score + scoreOff! + scoreDef!;
     // The service needs an user object. Let's create one with score as total
@@ -63,7 +63,8 @@ class UserProvider extends ChangeNotifier{
       if(result == true){
         //update the score
         setScore(total);
-        // TO DO - UPDATE THE GAMEPROVIDERS ITEMLISTS!!!!!!!
+        // Update the collected and modelitems lists
+        
         // else display error message?
       } else {
         //TO DO
