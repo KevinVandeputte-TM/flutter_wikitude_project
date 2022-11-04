@@ -51,9 +51,6 @@ class _ARShow3DModelAtGeolocationWidgetState
     super.initState();
     //fetch the models already
 
-//permissions for camera
-    _checkPermissions();
-
     WidgetsBinding.instance.addObserver(this);
     // Future.delayed(Duration(seconds: 5), () {
     architectWidget = ArchitectWidget(
@@ -105,17 +102,34 @@ class _ARShow3DModelAtGeolocationWidgetState
           );
         }
         //call one time getstartlocation
-        await fetchStartLocation();
+        await Geolocator.getCurrentPosition(
+                desiredAccuracy: LocationAccuracy.high)
+            .then((Position positionStart) {
+          context.read<GameProvider>().setAbsoluteStartCoordinates(
+              positionStart.latitude,
+              positionStart.longitude,
+              positionStart.altitude,
+              positionStart.accuracy);
+        });
+
+        //
+        //
+        // // //give coordinates from state to the javascript call
+        // StartCoordinates startcoordinates =
+        //     context.read<GameProvider>().absoluteStartCoordinates;
+        // architectWidget.callJavascript(
+        //
+        //
+        //
+        // 'World.setStartCoordinates("${startcoordinates.lat}","${startcoordinates.lon}","${startcoordinates.alt}","${startcoordinates.acc}")');
+
         //call the getlocation stream
         await getLocation();
 
-        //1. load the startcoordinates
-        StartCoordinates startcoordinates =
-            context.read<GameProvider>().absoluteStartCoordinates;
+//1. load the modelitems in wikitude
 
-        'World.setStartCoordinates("${startcoordinates.lat}","${startcoordinates.lon}","${startcoordinates.alt}","${startcoordinates.acc}")';
-        //2. load the modelitems in wikitude
-        for (ModelItem item in context.read<GameProvider>().modelItems) {
+        List modelItemsFromProvider = context.read<GameProvider>().modelItems;
+        for (ModelItem item in modelItemsFromProvider) {
           architectWidget.callJavascript(
               'World.getModelNames("${item.objectname}","${item.relativeLat}", "${item.relativeLon}")');
         }
@@ -139,20 +153,6 @@ class _ARShow3DModelAtGeolocationWidgetState
       architectWidget.setLocation(position.latitude, position.longitude,
           position.altitude, position.accuracy);
       setState(() {});
-    });
-  }
-
-  /* GETTING THE USER LOCATION 1 time > for setting initial position and remembering it the relaunch the wikitude environment*/
-  Future<void> fetchStartLocation() async {
-    if (!haspermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position positionStart) {
-      debugPrint("GetcurrentPosition: altitude${positionStart.altitude}");
-      context.read<GameProvider>().setAbsoluteStartCoordinates(
-          positionStart.latitude,
-          positionStart.latitude,
-          positionStart.altitude,
-          positionStart.accuracy);
     });
   }
 

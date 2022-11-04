@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:got_app/models/flutterwikitudeexchange.dart';
 import 'package:got_app/models/game.dart';
 
@@ -9,12 +10,16 @@ class GameProvider extends ChangeNotifier {
   final List<ModelItem> _modelItems = [];
   late StartCoordinates _absoluteStartCoordinates;
   int _level = 1;
+  bool _haspermit = false;
+  bool _servicestatus = false;
+  late LocationSettings _locationSettings;
 
- 
   List get collectedItems => _collectedItems;
   List get modelItems => _modelItems;
   get absoluteStartCoordinates => _absoluteStartCoordinates;
   int get level => _level;
+  bool get haspermit => _haspermit;
+  bool get servicestatus => _servicestatus;
 
   void setCollectedItems(String objectname) {
     _collectedItems.add(objectname);
@@ -50,6 +55,14 @@ class GameProvider extends ChangeNotifier {
   void setLevel() {
     _level += 1;
     notifyListeners();
+  }
+
+  void setPermit(valueGiven) {
+    _haspermit = valueGiven;
+  }
+
+  void setServiceStatus(valueGiven) {
+    _servicestatus = valueGiven;
   }
 
   Future<void> fetchModelsfromApi() async {
