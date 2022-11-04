@@ -1,6 +1,7 @@
 import 'package:augmented_reality_plugin_wikitude/wikitude_plugin.dart';
 import 'package:augmented_reality_plugin_wikitude/wikitude_response.dart';
 import 'package:flutter/material.dart';
+import 'package:got_app/models/user.dart';
 import 'package:got_app/pages/gamerules.dart';
 import 'package:got_app/pages/highscores.dart';
 import 'package:got_app/pages/question.dart';
@@ -200,15 +201,14 @@ class _HomePageState extends State<HomePage> {
     });
 
     //Create user
-    // EdgeserverApi.createUser(_username, _selectedavatar).then((result){
-    //   /* UPDATE PROVIDER */
-    //   context.read<UserProvider>().setUserID(result.userID);
-    //   context.read<UserProvider>().setUsername(result.name);
-    //   context.read<UserProvider>().setAvatarID(result.avatarID);
-    //   context.read<UserProvider>().setScore(result.score);
-    //   Navigator.of(context).pop(usernameController.text);
-    //   usernameController.clear();
-    // });
+    EdgeserverApi.createUser(_username, _selectedavatar).then((result){
+      /* UPDATE PROVIDER */
+      User u = result;
+      context.read<UserProvider>().setUserData(u);
+      //Navigator.of(context).pop(usernameController.text);
+      //Clear usernamecontroller
+      usernameController.clear();
+    });
 
     //model en provider opvullen
 

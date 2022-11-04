@@ -93,8 +93,14 @@ class _QuestionPageState extends State<QuestionPage> {
   }
 
   /* CHECK ANSWER */
-  void _checkAnswer(String answer) {
-    print("CHECKING ANSWER: $answer");
-    // TO DO WHEN STATE MANAGEMENT IS PROVIDED!
+  void _checkAnswer(String answer){
+      // if given correct answer update User in DB and Provider. This is handled by de UserProvider
+      if(answer == game?.correctanswer){
+        // UPDATE USER IN PROVIDER AND DB
+        context.read<UserProvider>().updateUser(game?.scoreOffensive, game?.scoreDefensive);
+      } else {
+        print("YOU'RE STUPID, BOY!");
+      }
+
   }
 }
