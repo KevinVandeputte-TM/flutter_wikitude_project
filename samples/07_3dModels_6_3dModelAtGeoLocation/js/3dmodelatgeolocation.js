@@ -5,7 +5,7 @@
 
         //objectsnames => contained by API call
         objectsNames: [
-            { 'name': 'OFF_BlackFyre_Sword', 'relativelat': 1, 'relativelon': 1, },
+            // { 'name': 'OFF_Sword', 'relativelat': 1, 'relativelon': 1, },
 
         ],
 
@@ -24,7 +24,7 @@
                 //for each object in the objecNames => make model
                 World.objectsNames.forEach(element => {
                     World.createModelAtLocation(element.name, element.relativelat, element.relativelon, element.relativeacc);
-                    console.log("----- WIKITUDE ----- made object  " + element.name);
+                    console.log("----- WIKITUDE ----- made object  :" + element.name + "_end");
                 })
             }
         },
@@ -71,7 +71,7 @@
 
         //------From Flutter to Wiki => Give information for models
         getModelNames: function getModelNamesFn(objectname, relLatitude, relLongitude) {
-            //    this.objectsNames.push({ 'name': objectname, 'relativelat': relLatitude, 'relativelon': relLongitude }, )
+            this.objectsNames.push({ 'name': objectname, 'relativelat': relLatitude, 'relativelon': relLongitude }, )
         },
         //------From Flutter to Wiki => Give information for models
         setStartCoordinates: function setStartCoordinatesFn(lat, lon, alt, acc) {
