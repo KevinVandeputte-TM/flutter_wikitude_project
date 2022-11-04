@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:got_app/models/flutterwikitudeexchange.dart';
-import 'package:got_app/models/game.dart';
 
 import '../apis/edgeserver_api';
 
@@ -16,13 +15,16 @@ class GameProvider extends ChangeNotifier {
   get absoluteStartCoordinates => _absoluteStartCoordinates;
   int get level => _level;
 
+  /* Set collecteditems and modelitems */
   void setCollectedItems(String objectname) {
+    // add the string of the collected item into the collectedItems list
     _collectedItems.add(objectname);
-    //if only one item is remaining in the modellist => level +1
+    //if only one item is remaining in the modellist => level +1 and get new models?
     if (_modelItems.length == 1) {
-      _modelItems.removeWhere((item) => item.objectname == objectname);
+      _modelItems.clear();
       setLevel();
     } else {
+      // remove the item form the modelitems
       _modelItems.removeWhere((item) => item.objectname == objectname);
     }
     notifyListeners();
@@ -49,6 +51,8 @@ class GameProvider extends ChangeNotifier {
 
   void setLevel() {
     _level += 1;
+    //get new models if level goes up.
+    fetchModelsfromApi();
     notifyListeners();
   }
 
