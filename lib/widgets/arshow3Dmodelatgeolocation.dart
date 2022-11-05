@@ -50,23 +50,35 @@ class _ARShow3DModelAtGeolocationWidgetState
       startupConfiguration: startupConfiguration,
       features: features,
     );
-    // getLocation();
+    getLocation();
   }
-
-  // Future<void> startGame() async {
-  //   debugPrint("A--Got to start the game");
-
-  //   await getLocation();
-  // }
 
   /* GETTING THE USER LOCATION every 2 seconds*/
   Future<void> getLocation() async {
-    debugPrint("A--Got to await get location");
+//set the locationsettings for your device
+    LocationSettings locationSettings;
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      locationSettings = AndroidSettings(
+        accuracy: LocationAccuracy.best,
+        //distanceFilter: 10, //distanceFilter: the minimum distance (measured in meters) a device must move horizontally before an update event is generated;
+        intervalDuration: const Duration(seconds: 10),
+      );
+    } else if (defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.macOS) {
+      locationSettings = AppleSettings(
+        accuracy: LocationAccuracy.best,
+        activityType: ActivityType.fitness,
+      );
+    } else {
+      locationSettings = const LocationSettings(
+        accuracy: LocationAccuracy.best,
+      );
+    }
     //Subscibe to Stream of location updates
-    LocationSettings settings =
-        context.read<GameProvider>().getLocationsettings;
-    positionStream = Geolocator.getPositionStream(locationSettings: settings)
-        .listen((Position position) {
+    //start stream
+    positionStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position position) {
       debugPrint("---*FLUTTER  The position: $position");
       //UPDATING THE AR.CONTEXT
       architectWidget.setLocation(position.latitude, position.longitude,
@@ -117,8 +129,8 @@ class _ARShow3DModelAtGeolocationWidgetState
 
   Future<void> onLoadSuccess() async {
     debugPrint("---*FLUTTER Successfully loaded Architect World");
-    // await getLocation();
-    //2. load the modelitems in wikitude
+
+    //1. load the modelitems in wikitude
     for (ModelItem item in context.read<GameProvider>().modelItems) {
       debugPrint(
           "Call JS to pass Models to he getmodels function : ${item.objectname}");
@@ -127,7 +139,7 @@ class _ARShow3DModelAtGeolocationWidgetState
           'World.getModelNames("${item.objectname}","${item.relativeLat}", "${item.relativeLon}")');
     }
 
-    //1. load the startcoordinates
+    //2. load the startcoordinates
     StartCoordinates startcoordinates =
         context.read<GameProvider>().getStartPosition;
     debugPrint("Call JS to pass the first position");

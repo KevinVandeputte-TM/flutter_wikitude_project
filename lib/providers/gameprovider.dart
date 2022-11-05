@@ -9,7 +9,7 @@ class GameProvider extends ChangeNotifier {
   bool _servicestatus = false;
   bool _haspermission = false;
   late LocationPermission _locationPermission;
-  late LocationSettings _locationSettings;
+
   late StartCoordinates _startPosition;
 
   //for game
@@ -22,7 +22,6 @@ class GameProvider extends ChangeNotifier {
   bool get getServicestatus => _servicestatus;
   bool get getHasPermission => _haspermission;
   LocationPermission get getLocationpermission => _locationPermission;
-  LocationSettings get getLocationsettings => _locationSettings;
   StartCoordinates get getStartPosition => _startPosition;
 
 //game
@@ -32,7 +31,6 @@ class GameProvider extends ChangeNotifier {
 
 /*Setters*/
 //to start
-
   void setServicestatus(status) {
     _servicestatus = status;
   }
@@ -41,34 +39,13 @@ class GameProvider extends ChangeNotifier {
     _haspermission = status;
     if (_haspermission) {
       debugPrint("WE HAVE PERMISSIONS: PROV");
-      setLocationsettings();
+
       setStartPosition();
     }
   }
 
   void setLocationPermission(status) {
     _locationPermission = status;
-  }
-
-  void setLocationsettings() {
-    debugPrint("1.SET LOCATIONSETTINGS _ PROV");
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      _locationSettings = AndroidSettings(
-        accuracy: LocationAccuracy.best,
-        //distanceFilter: 10, //distanceFilter: the minimum distance (measured in meters) a device must move horizontally before an update event is generated;
-        intervalDuration: const Duration(seconds: 10),
-      );
-    } else if (defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.macOS) {
-      _locationSettings = AppleSettings(
-        accuracy: LocationAccuracy.best,
-        activityType: ActivityType.fitness,
-      );
-    } else {
-      _locationSettings = const LocationSettings(
-        accuracy: LocationAccuracy.best,
-      );
-    }
   }
 
   /* GETTING THE USER LOCATION 1 time > for setting initial position and remembering it the relaunch the wikitude environment*/
