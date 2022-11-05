@@ -4,63 +4,99 @@
     var World = {
 
         //objectsnames => contained by API call
-        objectsNames: [
-            // { 'name': 'OFF_Sword', 'relativelat': 1, 'relativelon': 1, },
+        objectsNames: [{
+            'name': 'DEF_Sword',
+            'relativelat': 1,
+            'relativelon': 1,
+        }],
 
-        ],
-
-        startCoordinates: {},
+        //startcoordinates => contained by API call
+        startPosition: {},
+        //Coordinates => push the user position coordinates
+        coordinates: [],
 
 
         init: function initFn() {},
 
-        // get the location of the user by flutter and add to array.
+
+        //------From Flutter to Wiki => Give information for models
+        //1: ------From Flutter to Wiki => Give information for models
+        setStartPosition: async function setStartPositionFn(lat, lon, alt, acc) {
+            console.log("STEP 2 : SET StartCoordinates from JS")
+            console.log("THE LOCATION IS GIVEN " + lat);
+            console.log("THE LOCATION IS GIVEN " + lon);
+            console.log("THE LOCATION IS GIVEN " + alt);
+            World.startPosition = { 'lat': lat, "lon": lon, "alt": alt, "acc": acc }
+            console.log("STEP 2 : SET WORLDStartCoordinates from JS: lat: " + World.startPosition.acc)
+
+            if (World.startPosition != null) {
+                console.log("START CREATING THE MODELS NOW => FUNCTION CALLED")
+                World.startCreatingModels()
+            }
+
+        },
+        getModelNames: function getModelNamesFn(objectname, relLatitude, relLongitude) {
+            console.log("STEP 1 : GET Modelnames from JS " + objectname)
+            console.log("STEP 1 : GET Modelnames from JS " + relLatitude)
+            console.log("STEP 1 : GET Modelnames from JS " + relLongitude)
+            World.objectsNames.push({ 'name': objectname, 'relativelat': relLatitude, 'relativelon': relLongitude }, )
+        },
+
+        //3: ------Create Models now the objectsnames are filled
+        startCreatingModels: function startCreatingModels() {
+            console.log("STEP 3 : CREATE Models")
+                //loop over the objects given from the javascript call
+
+            World.objectsNames.forEach(element => {
+                World.createModel(element.name, element.relativelat, element.relativelon);
+
+                console.log("----- WIKITUDE ----- made object  :" + element.name);
+                console.log("----- WIKITUDE ----- made object  :" + element.name);
+            })
+        },
+        //4: ------Start to receive the coordinates from the user per 2 sec
         locationChanged: function locationChanged(lat, lon, alt, acc) {
             coordinates.push({ 'lat': lat, "lon": lon, "alt": alt, "acc": acc })
 
-            //start creating models if startcoordinates are in.
-            //   if (this.startCoordinates != null) {
-            if (coordinates.length == 1) {
-                //for each object in the objecNames => make model
-                World.objectsNames.forEach(element => {
-                    World.createModelAtLocation(element.name, element.relativelat, element.relativelon, element.relativeacc);
-                    console.log("----- WIKITUDE ----- made object  :" + element.name + "_end");
-                })
-            }
         },
 
 
-        createModelAtLocation: function createModelAtLocationFn(modelname, rel_latitide, rel_longitude, rel_altitude) {
-            //      console.log('-------WIKITUDE: CreateModel at startlocation: ' + modelname + "loc: " + startCoordinates.lat)
-            //abosolute locations
+
+        createModel: function createModelFn(modelname, rel_latitide, rel_longitude) {
+            console.log("STEP 5 : CREATE Model")
+
+            console.log(modelname);
+            //abosolute location for the object, taking relative placing in count
             var location = new AR.GeoLocation(
-                parseFloat(coordinates[0].lat + (rel_latitide / 10000)),
-                parseFloat(coordinates[0].lon + (rel_longitude / 10000)),
-                // parseFloat(startCoordinates.lat + (rel_latitide / 10000)),
-                // parseFloat(startCoordinates.lon + (rel_longitude / 10000)),
+                // parseFloat(World.startPosition.lat + (rel_latitide / 10000)),
+                // parseFloat(World.startPosition.lon + (rel_longitude / 10000)),
+                parseFloat(50.9571015 + (rel_latitide / 10000)),
+                parseFloat(5.4399702 + (rel_longitude / 10000)),
+                AR.CONST.UNKNOWN_ALTITUDE,
             );
+            console.log("LAT: " + parseFloat(50.9571015 + (rel_latitide / 10000))),
+                console.log("LON: " + parseFloat(5.4399702 + (rel_longitude / 10000))),
+                console.log(location);
+
             /* Next the model object is loaded. */
             var modelEarth = new AR.Model("assets/models/" + modelname + ".wt3", {
                 onError: World.onError,
                 scale: {
-                    x: 1,
-                    y: 1
+                    x: 10,
+                    y: 10
                 },
                 onClick: function() {
-                    console.log('-------WIKITUDE: --------------------------------MODEL CLICKED' + modelname);
+                    //   console.log('-------WIKITUDE: --------------------------------MODEL CLICKED' + modelname);
                     AR.platform.sendJSONObject({
                         "modelname": modelname
                     });
                 }
             });
-
-
             /* Putting it all together the location and 3D model is added to an AR.GeoObject. */
             this.geoObject = new AR.GeoObject(location, {
                 onError: World.onError,
                 drawables: {
                     cam: [modelEarth],
-                    // indicator: [indicatorDrawable]
                 }
             });
 
@@ -69,14 +105,8 @@
             alert(error);
         },
 
-        //------From Flutter to Wiki => Give information for models
-        getModelNames: function getModelNamesFn(objectname, relLatitude, relLongitude) {
-            this.objectsNames.push({ 'name': objectname, 'relativelat': relLatitude, 'relativelon': relLongitude }, )
-        },
-        //------From Flutter to Wiki => Give information for models
-        setStartCoordinates: function setStartCoordinatesFn(lat, lon, alt, acc) {
-            this.startCoordinates = { 'lat': lat, "lon": lon, "alt": alt, "acc": acc }
-        }
+
+
     };
 
     World.init();
