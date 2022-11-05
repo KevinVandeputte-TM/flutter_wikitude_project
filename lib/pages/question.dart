@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:got_app/models/game.dart';
-import 'package:got_app/providers/gameprovider.dart';
 import 'package:got_app/providers/userprovider.dart';
 import 'package:got_app/widgets/answer.dart';
 import 'package:got_app/widgets/loadingspinner.dart';
@@ -95,19 +94,25 @@ class _QuestionPageState extends State<QuestionPage> {
   }
 
   /* CHECK ANSWER */
-  void _checkAnswer(String answer){
-      // if given correct answer update User in DB and Provider. This is handled by de UserProvider
-      if(answer == game?.correctanswer){
-        // Show message
-         MessageBoxWidget.show(context, "That was correct. You collected the ${widget.modelname}. Good luck on your quest!", "success");
-        // UPDATE GAME = USER IN PROVIDER AND DB + MODEL AND COLLECTEDITEMS IN GAME PROVIDER
-        context.read<UserProvider>().updateGame(context, game?.scoreOffensive, game?.scoreDefensive, widget.modelname);
-      } else {
-        //Show snackbar message
-        MessageBoxWidget.show(context, "That was a wrong answer. You didn't collect the ${widget.modelname}. Too bad! Good luck on your quest!", "error");
-      }
+  void _checkAnswer(String answer) {
+    // if given correct answer update User in DB and Provider. This is handled by de UserProvider
+    if (answer == game?.correctanswer) {
+      // Show message
+      MessageBoxWidget.show(
+          context,
+          "That was correct. You collected the ${widget.modelname}. Good luck on your quest!",
+          "success");
+      // UPDATE GAME = USER IN PROVIDER AND DB + MODEL AND COLLECTEDITEMS IN GAME PROVIDER
+      context.read<UserProvider>().updateGame(context, game?.scoreOffensive,
+          game?.scoreDefensive, widget.modelname);
+    } else {
+      //Show snackbar message
+      MessageBoxWidget.show(
+          context,
+          "That was a wrong answer. You didn't collect the ${widget.modelname}. Too bad! Good luck on your quest!",
+          "error");
+    }
 
-      //STARTEN VAN DE AR OMGEVING - TO DO
-
+    //STARTEN VAN DE AR OMGEVING - TO DO
   }
 }

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:augmented_reality_plugin_wikitude/architect_widget.dart';
 import 'package:augmented_reality_plugin_wikitude/startupConfiguration.dart';
-import 'package:augmented_reality_plugin_wikitude/wikitude_plugin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -37,23 +36,12 @@ class _ARShow3DModelAtGeolocationWidgetState
   //this feature is needed for multiple targets scanning
   List<String> features = ["image_tracking"];
 
-  /* Attributes */
-  bool servicestatus = false;
-  bool haspermission = false;
-  late LocationPermission permission;
-  late LocationSettings locationSettings;
-  late Position startposition;
   late StreamSubscription<Position> positionStream;
 
   //Initialising architectWidet
   @override
   initState() {
     super.initState();
-    //fetch the models already
-
-//permissions for camera
-    _checkPermissions();
-
     WidgetsBinding.instance.addObserver(this);
     // Future.delayed(Duration(seconds: 5), () {
     architectWidget = ArchitectWidget(
@@ -62,75 +50,32 @@ class _ARShow3DModelAtGeolocationWidgetState
       startupConfiguration: startupConfiguration,
       features: features,
     );
-    //  });
-  }
-
-  //Checking  permissions
-  Future<void> _checkPermissions() async {
-    servicestatus = await Geolocator.isLocationServiceEnabled();
-    if (servicestatus) {
-      permission = await Geolocator.checkPermission();
-      //if permission denied request permission
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          return Future.error('---*FLUTTER Location services are denied.');
-        } else if (permission == LocationPermission.deniedForever) {
-          return Future.error(
-              '---*FLUTTER Location services are permanently denied.');
-        } else {
-          haspermission = true;
-        }
-      } else {
-        haspermission = true;
-      }
-
-      if (haspermission) {
-        //Location Settings
-        if (defaultTargetPlatform == TargetPlatform.android) {
-          locationSettings = AndroidSettings(
-            accuracy: LocationAccuracy.best,
-            //distanceFilter: 10, //distanceFilter: the minimum distance (measured in meters) a device must move horizontally before an update event is generated;
-            intervalDuration: const Duration(seconds: 10),
-          );
-        } else if (defaultTargetPlatform == TargetPlatform.iOS ||
-            defaultTargetPlatform == TargetPlatform.macOS) {
-          locationSettings = AppleSettings(
-            accuracy: LocationAccuracy.best,
-            activityType: ActivityType.fitness,
-          );
-        } else {
-          locationSettings = const LocationSettings(
-            accuracy: LocationAccuracy.best,
-          );
-        }
-        //call one time getstartlocation
-        await fetchStartLocation();
-        //call the getlocation stream
-        await getLocation();
-
-        //1. load the startcoordinates
-        StartCoordinates startcoordinates =
-            context.read<GameProvider>().absoluteStartCoordinates;
-
-        'World.setStartCoordinates("${startcoordinates.lat}","${startcoordinates.lon}","${startcoordinates.alt}","${startcoordinates.acc}")';
-        //2. load the modelitems in wikitude
-        for (ModelItem item in context.read<GameProvider>().modelItems) {
-          architectWidget.callJavascript(
-              'World.getModelNames("${item.objectname}","${item.relativeLat}", "${item.relativeLon}")');
-        }
-      } else {
-        return Future.error(
-            '---*FLUTTER  GPS servicde is not enabled, turn on GPS location services');
-      }
-    }
-    setState(() {});
+    getLocation();
   }
 
   /* GETTING THE USER LOCATION every 2 seconds*/
   Future<void> getLocation() async {
-    debugPrint("---*FLUTTER GET LOCATION STARTED");
+//set the locationsettings for your device
+    LocationSettings locationSettings;
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      locationSettings = AndroidSettings(
+        accuracy: LocationAccuracy.best,
+        //distanceFilter: 10, //distanceFilter: the minimum distance (measured in meters) a device must move horizontally before an update event is generated;
+        intervalDuration: const Duration(seconds: 10),
+      );
+    } else if (defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.macOS) {
+      locationSettings = AppleSettings(
+        accuracy: LocationAccuracy.best,
+        activityType: ActivityType.fitness,
+      );
+    } else {
+      locationSettings = const LocationSettings(
+        accuracy: LocationAccuracy.best,
+      );
+    }
     //Subscibe to Stream of location updates
+    //start stream
     positionStream =
         Geolocator.getPositionStream(locationSettings: locationSettings)
             .listen((Position position) {
@@ -138,21 +83,6 @@ class _ARShow3DModelAtGeolocationWidgetState
       //UPDATING THE AR.CONTEXT
       architectWidget.setLocation(position.latitude, position.longitude,
           position.altitude, position.accuracy);
-      setState(() {});
-    });
-  }
-
-  /* GETTING THE USER LOCATION 1 time > for setting initial position and remembering it the relaunch the wikitude environment*/
-  Future<void> fetchStartLocation() async {
-    if (!haspermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position positionStart) {
-      debugPrint("GetcurrentPosition: altitude${positionStart.altitude}");
-      context.read<GameProvider>().setAbsoluteStartCoordinates(
-          positionStart.latitude,
-          positionStart.latitude,
-          positionStart.altitude,
-          positionStart.accuracy);
     });
   }
 
@@ -191,6 +121,7 @@ class _ARShow3DModelAtGeolocationWidgetState
         "samples/07_3dModels_6_3dModelAtGeoLocation/index.html",
         onLoadSuccess,
         onLoadFailed);
+
     architectWidget.resume();
     architectWidget.setJSONObjectReceivedCallback(
         (result) => OnJSONObjectReceived(result));
@@ -198,6 +129,22 @@ class _ARShow3DModelAtGeolocationWidgetState
 
   Future<void> onLoadSuccess() async {
     debugPrint("---*FLUTTER Successfully loaded Architect World");
+
+    //1. load the modelitems in wikitude
+    for (ModelItem item in context.read<GameProvider>().modelItems) {
+      debugPrint(
+          "Call JS to pass Models to he getmodels function : ${item.objectname}");
+      //give to JS from wikitude
+      architectWidget.callJavascript(
+          'World.getModelNames("${item.objectname}","${item.relativeLat}", "${item.relativeLon}")');
+    }
+
+    //2. load the startcoordinates
+    StartCoordinates startcoordinates =
+        context.read<GameProvider>().getStartPosition;
+    debugPrint("Call JS to pass the first position");
+    architectWidget.callJavascript(
+        'World.setStartPosition("${startcoordinates.lat}","${startcoordinates.lon}","${startcoordinates.alt}","${startcoordinates.acc}")');
   }
 
   Future<void> onLoadFailed(String error) async {

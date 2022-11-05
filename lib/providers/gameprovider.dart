@@ -1,20 +1,69 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:got_app/models/flutterwikitudeexchange.dart';
 
 import '../apis/edgeserver_api';
 
 class GameProvider extends ChangeNotifier {
+//to start the game
+  bool _servicestatus = false;
+  bool _haspermission = false;
+  late LocationPermission _locationPermission;
+
+  late StartCoordinates _startPosition;
+
+  //for game
   final List _collectedItems = [];
   final List<ModelItem> _modelItems = [];
-  late StartCoordinates _absoluteStartCoordinates;
   int _level = 1;
 
- 
+/*Getters */
+//to start game
+  bool get getServicestatus => _servicestatus;
+  bool get getHasPermission => _haspermission;
+  LocationPermission get getLocationpermission => _locationPermission;
+  StartCoordinates get getStartPosition => _startPosition;
+
+//game
   List get collectedItems => _collectedItems;
   List get modelItems => _modelItems;
-  get absoluteStartCoordinates => _absoluteStartCoordinates;
   int get level => _level;
 
+/*Setters*/
+//to start
+  void setServicestatus(status) {
+    _servicestatus = status;
+  }
+
+  Future<void> setHaspermission(status) async {
+    _haspermission = status;
+    if (_haspermission) {
+      debugPrint("WE HAVE PERMISSIONS: PROV");
+
+      setStartPosition();
+    }
+  }
+
+  void setLocationPermission(status) {
+    _locationPermission = status;
+  }
+
+  /* GETTING THE USER LOCATION 1 time > for setting initial position and remembering it the relaunch the wikitude environment*/
+  void setStartPosition() async {
+    debugPrint("2. set the StartPosition _ PROV");
+
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position positionStart) {
+      _startPosition = StartCoordinates(
+          lat: positionStart.latitude,
+          lon: positionStart.longitude,
+          alt: positionStart.altitude,
+          acc: positionStart.accuracy);
+    });
+    notifyListeners();
+  }
+
+//-------------------------------------------game
   /* Set collecteditems and modelitems */
   void setCollectedItems(String objectname) {
     // add the string of the collected item into the collectedItems list
@@ -41,14 +90,6 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setAbsoluteStartCoordinates(
-      double lat, double lon, double alt, double acc) {
-    _absoluteStartCoordinates =
-        StartCoordinates(lat: lat, lon: lon, alt: alt, acc: acc);
-    debugPrint("GETCURRENTLOCATION - SETABSOLUTE: lat$lat");
-    notifyListeners();
-  }
-
   void setLevel() {
     _level += 1;
     //get new models if level goes up.
@@ -56,14 +97,14 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+/* API calls to gather data */
   Future<void> fetchModelsfromApi() async {
-    debugPrint("Fetchmodelsbylevelprovider");
-    //   setModelItems("e.objectName", 4.5, 5.4, false);
     //get level set in the provider
     await EdgeserverApi.fetchModelsByLevel(_level).then((result) {
       /* UPDATE PROVIDER */
       result.forEach((element) {
         setModelItems(element.objectName, element.x, element.y, false);
+        debugPrint("Set models in modelitems ${element.objectName}");
       });
     });
   }

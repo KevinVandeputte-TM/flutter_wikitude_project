@@ -1,6 +1,7 @@
 import 'package:augmented_reality_plugin_wikitude/wikitude_plugin.dart';
 import 'package:augmented_reality_plugin_wikitude/wikitude_response.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:got_app/models/user.dart';
 import 'package:got_app/pages/gamerules.dart';
 import 'package:got_app/pages/highscores.dart';
@@ -22,12 +23,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //navigation
   int _currentIndex = 0;
   final pages = const [HomePage(), HighScorePage(), GameRulesPage()];
   late TextEditingController usernameController;
+  //user and avatar
   String _username = "";
   late int _selectedavatar;
-
   final _avatars = [
     0,
     1,
@@ -75,6 +77,8 @@ class _HomePageState extends State<HomePage> {
 
     usernameController = TextEditingController();
     _selectedavatar = _avatars[0];
+//check permissions for gps
+    _checkServiceStatus();
   }
 
   @override
@@ -202,7 +206,7 @@ class _HomePageState extends State<HomePage> {
     });
 
     //Create user
-    EdgeserverApi.createUser(_username, _selectedavatar).then((result){
+    EdgeserverApi.createUser(_username, _selectedavatar).then((result) {
       /* UPDATE PROVIDER */
       User u = result;
       context.read<UserProvider>().setUserData(u);
@@ -213,7 +217,6 @@ class _HomePageState extends State<HomePage> {
 
     //model en provider opvullen
 
-    debugPrint("Wij gaan starten");
     checkDeviceCompatibility().then((value) => {
           if (value.success)
             {
@@ -250,5 +253,34 @@ class _HomePageState extends State<HomePage> {
 
   Future<WikitudeResponse> requestARPermissions() async {
     return await WikitudePlugin.requestARPermissions(features);
+  }
+
+//1: check if gps service is available
+  Future<void> _checkServiceStatus() async {
+    var gelocatorservice = await Geolocator.isLocationServiceEnabled();
+    context.read<GameProvider>().setServicestatus(gelocatorservice);
+
+    if (gelocatorservice) {
+      debugPrint("Home: Start servicestatus check: $gelocatorservice");
+      var locationpermission = await Geolocator.checkPermission();
+      context.read<GameProvider>().setLocationPermission(locationpermission);
+
+      //if permission denied request permission
+      if (locationpermission == LocationPermission.denied ||
+          locationpermission == LocationPermission.deniedForever) {
+        //give one more go to request permissions
+        locationpermission = await Geolocator.requestPermission();
+        if (locationpermission == LocationPermission.denied ||
+            locationpermission == LocationPermission.deniedForever) {
+          Future.error('---*FLUTTER Location services are denied.');
+          context.read<GameProvider>().setHaspermission(false);
+        }
+      } else {
+        context.read<GameProvider>().setHaspermission(true);
+      }
+    } else {
+      return Future.error(
+          '---*FLUTTER  GPS service is not enabled, turn on GPS location services');
+    }
   }
 }
