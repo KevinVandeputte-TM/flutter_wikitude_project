@@ -55,21 +55,18 @@
      createModel: function createModelFn(modelname, rel_latitide, rel_longitude) {
          console.log("STEP 5 : CREATE Model");
          console.log("relative lat en long: " + rel_latitide + ", " + rel_longitude);
-         console.log(modelname);
-         console.log("Positie " + modelname + " is lat/long/alt SOM: " + parseFloat(World.startPosition.lat + (rel_latitide / 100)) + ", " + parseFloat(World.startPosition.lon + (rel_longitude / 100)));
-         console.log("Positie " + modelname + " is lat/long/alt STA: " + parseFloat(World.startPosition.lat) + ", " + parseFloat(World.startPosition.lon));
 
-         objectlatitude = parseFloat(World.startPosition.lat) + parseFloat(rel_latitide / 100);
-         objectlongitude = parseFloat(World.startPosition.lon) + parseFloat(rel_longitude / 100);
+         objectlatitude = parseFloat(World.startPosition.lat) + parseFloat(rel_latitide / 10000);
+         objectlongitude = parseFloat(World.startPosition.lon) + parseFloat(rel_longitude / 10000);
          objectaltitude = parseFloat(World.startPosition.alt);
-         console.log("Positie " + modelname + " is lat/long/alt STA: " + parseFloat(World.startPosition.lat) + ", " + parseFloat(World.startPosition.lon));
+         console.log("Positie " + modelname + " is lat/long/alt OBJ: " + objectlatitude + ", " + objectlongitude);
 
          //abosolute location for the object, taking relative placing in count
          var location = new AR.GeoLocation(
              objectlatitude, objectlongitude, objectaltitude
          );
-         console.log("Positie " + modelname + " is lat/long/alt: " + parseFloat(World.startPosition.lat + (rel_latitide / 100)) + ", " + parseFloat(World.startPosition.lon + (rel_longitude / 100)), )
-             /* Next the model object is loaded. */
+         //  console.log("Positie " + modelname + " is lat/long/alt: " + parseFloat(World.startPosition.lat + (rel_latitide / 100)) + ", " + parseFloat(World.startPosition.lon + (rel_longitude / 100)), )
+         /* Next the model object is loaded. */
          var modelEarth = new AR.Model("assets/models/" + modelname + ".wt3", {
              onError: World.onError,
              scale: {
