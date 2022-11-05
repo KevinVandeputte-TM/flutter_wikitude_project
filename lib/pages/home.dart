@@ -94,59 +94,31 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text("A game of thrones"),
       ),
-      body: Column(children: <Widget>[
-        Row(
-          children: <Widget>[
-            const Expanded(
-              child: Text("Username: "),
-            ),
-            const SizedBox(width: 12),
-            Text(context.read<UserProvider>().username),
-          ],
-        ),
+      body: Center(
+        child: 
         ElevatedButton(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: const <Widget>[
-                Icon(Icons.play_arrow),
-                SizedBox(
-                  width: 8,
-                ),
-                Text("Play Game")
-              ],
-            ),
-            onPressed: () async {
-              // USERNAME POP UP
-              final username = await openDialog();
-              if (username == null || username.isEmpty) return;
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: const <Widget>[
+              Icon(Icons.play_arrow),
+              SizedBox(
+                width: 8,
+              ),
+              Text("Play Game")
+            ],
+          ),
+          onPressed: () async {
+            // USERNAME POP UP
+            final username = await openDialog();
+            if (username == null || username.isEmpty) return;
 
-              setState(() {
-                _username = username;
-              });
-            }),
-// --------- ELEVATED BUTTON FOR TESTING PURPOSES ONLY -------------
-        ElevatedButton(
-            onPressed: (() {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const QuestionPage(
-                            modelname: "EXTRA_PotionVial",
-                          )));
-            }),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: const <Widget>[
-                SizedBox(
-                  width: 10,
-                ),
-                Text("Test vraag")
-              ],
-            )),
-//-------END TEST ELEVATED BUTTON ------------------------
-      ]),
+            setState(() {
+              _username = username;
+            });
+          }
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) => {
