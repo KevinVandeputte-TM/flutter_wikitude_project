@@ -4,6 +4,7 @@ import 'package:got_app/providers/gameprovider.dart';
 import 'package:got_app/providers/userprovider.dart';
 import 'package:got_app/widgets/answer.dart';
 import 'package:got_app/widgets/loadingspinner.dart';
+import 'package:got_app/widgets/messagebox.dart';
 import 'package:provider/provider.dart';
 import '../apis/edgeserver_api';
 
@@ -69,14 +70,6 @@ class _QuestionPageState extends State<QuestionPage> {
                 padding: EdgeInsets.only(bottom: _padding, top: _padding),
                 child: Text(
                   // ignore: prefer_interpolation_to_compose_strings
-                  "Collected items: " + context.watch<GameProvider>().collectedItems.toString(),
-                  textScaleFactor: 3,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: _padding, top: _padding),
-                child: Text(
-                  // ignore: prefer_interpolation_to_compose_strings
                   "Score: " + context.watch<UserProvider>().score.toString(),
                   textScaleFactor: 3,
                 ),
@@ -105,10 +98,13 @@ class _QuestionPageState extends State<QuestionPage> {
   void _checkAnswer(String answer){
       // if given correct answer update User in DB and Provider. This is handled by de UserProvider
       if(answer == game?.correctanswer){
+        // Show message
+         MessageBoxWidget.show(context, "That was correct. You collected the ${widget.modelname}. Good luck on your quest!", "success");
         // UPDATE GAME = USER IN PROVIDER AND DB + MODEL AND COLLECTEDITEMS IN GAME PROVIDER
         context.read<UserProvider>().updateGame(context, game?.scoreOffensive, game?.scoreDefensive, widget.modelname);
       } else {
-        print("YOU'RE STUPID, BOY!");
+        //Show snackbar message
+        MessageBoxWidget.show(context, "That was a wrong answer. You didn't collect the ${widget.modelname}. Too bad! Good luck on your quest!", "error");
       }
 
       //STARTEN VAN DE AR OMGEVING - TO DO
