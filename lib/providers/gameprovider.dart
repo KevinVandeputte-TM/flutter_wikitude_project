@@ -90,6 +90,17 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeObjectFromModelItems(String objectname){
+    if (_modelItems.length == 1) {
+      _modelItems.clear();
+      setLevel();
+    } else {
+      // remove the item form the modelitems
+      _modelItems.removeWhere((item) => item.objectname == objectname);
+    }
+    notifyListeners();
+  }
+
   void setLevel() {
     _level += 1;
     //get new models if level goes up.

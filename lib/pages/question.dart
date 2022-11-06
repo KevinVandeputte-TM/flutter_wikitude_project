@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:got_app/models/game.dart';
+import 'package:got_app/providers/gameprovider.dart';
 import 'package:got_app/providers/userprovider.dart';
 import 'package:got_app/widgets/answer.dart';
 import 'package:got_app/widgets/loadingspinner.dart';
@@ -25,6 +26,7 @@ class _QuestionPageState extends State<QuestionPage> {
   String _question = "";
   late final List<String> _answers = ["", "", ""];
   bool _isLoading = true; //bool variable created
+  bool _isAnswered = false; //Bool for checking if question is answered.
 
   @override
   void initState() {
@@ -85,7 +87,7 @@ class _QuestionPageState extends State<QuestionPage> {
                 return AnswerWidget(
                     answer: answer,
                     onAnswer: (answer) {
-                      _checkAnswer(answer);
+                      _isAnswered ? null : _checkAnswer(answer);
                     });
               }),
             ],
@@ -95,6 +97,7 @@ class _QuestionPageState extends State<QuestionPage> {
 
   /* CHECK ANSWER */
   void _checkAnswer(String answer) {
+    _isAnswered = true;
     // if given correct answer update User in DB and Provider. This is handled by de UserProvider
     if (answer == game?.correctanswer) {
       // Show message
@@ -106,13 +109,13 @@ class _QuestionPageState extends State<QuestionPage> {
       context.read<UserProvider>().updateGame(context, game?.scoreOffensive,
           game?.scoreDefensive, widget.modelname);
     } else {
+      //Remove item form modelItems array
+      context.read<GameProvider>().removeObjectFromModelItems(widget.modelname);
       //Show snackbar message
       MessageBoxWidget.show(
           context,
           "That was a wrong answer. You didn't collect the ${widget.modelname}. Too bad! Good luck on your quest!",
           "error");
     }
-
-    //STARTEN VAN DE AR OMGEVING - TO DO
   }
 }

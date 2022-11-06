@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:got_app/pages/argame.dart';
 
 class MessageBoxWidget{
   final String message;
@@ -11,7 +12,9 @@ class MessageBoxWidget{
     String message, String type,
   ) {
     if (type =="error"){
-      ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.transparent,
@@ -65,9 +68,18 @@ class MessageBoxWidget{
             ],
           ),
         ),
-      );
+      )
+      .closed
+      .then((_) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ArGamePage()
+        ),
+      ));
     } else if(type == "success"){
-      ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.transparent,
@@ -121,7 +133,14 @@ class MessageBoxWidget{
             ],
           ),
         ),
-      );
+      )
+      .closed
+      .then((_) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ArGamePage()
+        ),
+      ));
 
 
     }
