@@ -109,9 +109,9 @@ class _ARShow3DModelAtGeolocationWidgetState
   }
 
   @override
-  void dispose() {
-    architectWidget.pause();
-    architectWidget.destroy();
+  void dispose() async{
+    await architectWidget.pause();
+    await architectWidget.destroy();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -156,6 +156,9 @@ class _ARShow3DModelAtGeolocationWidgetState
     var clickedmodel = ARModelResponse.fromJson(jsonObject);
     await positionStream.cancel();
     dispose();
+    //await architectWidget.pause();
+
+    await Future.delayed(const Duration(milliseconds: 500));
 
     // ignore: use_build_context_synchronously
     Navigator.push(
