@@ -93,7 +93,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("A game of thrones"),
+        automaticallyImplyLeading: false,
+        title: Center(
+          child: const Text(
+            "A game of thrones",
+            textAlign: TextAlign.center,
+          ),
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
