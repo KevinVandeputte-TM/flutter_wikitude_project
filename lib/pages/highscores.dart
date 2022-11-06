@@ -42,21 +42,29 @@ class _HighScorePageState extends State {
       return const LoadingSpinnerWidget();
     }
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Highscores"),
-      ),
-      body: ListView.builder(
-        itemCount: count,
-        itemBuilder: (BuildContext context, int position) {
-          return Card(
-            elevation: 2.0,
-            child: ListTileWidget(
-                avatar: "${userList[position].avatarID}.png",
-                subtitletext: "Player: ${userList[position].name}",
-                titletext: "Score: ${userList[position].score}"),
-          );
-        },
-      ),
-    );
+        appBar: AppBar(
+          title: const Text("Highscores Top 5"),
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            image: DecorationImage(
+              image: AssetImage("assets/background.jpg"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: ListView.builder(
+            itemCount: count,
+            itemBuilder: (BuildContext context, int position) {
+              return Card(
+                elevation: 2.0,
+                child: ListTileWidget(
+                    avatar: "${userList[position].avatarID}.png",
+                    subtitletext: "Player: ${userList[position].name}",
+                    titletext: "Score: ${userList[position].score}"),
+              );
+            },
+          ),
+        ));
   }
 }

@@ -7,11 +7,12 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    MultiProvider(providers: [
-      ChangeNotifierProvider(create: (_) => UserProvider()),
-      ChangeNotifierProvider(create: (_) => GameProvider()),
-    ],
-    child: const MyApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => GameProvider()),
+      ],
+      child: const MyApp(),
     ),
   );
 }

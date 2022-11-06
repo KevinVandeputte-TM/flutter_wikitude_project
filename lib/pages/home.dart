@@ -1,6 +1,7 @@
 import 'package:augmented_reality_plugin_wikitude/wikitude_plugin.dart';
 import 'package:augmented_reality_plugin_wikitude/wikitude_response.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_glow/flutter_glow.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:got_app/models/user.dart';
 import 'package:got_app/pages/gamerules.dart';
@@ -94,32 +95,47 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text("A game of thrones"),
       ),
-      body: Center(
-        child: 
-        ElevatedButton(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: const <Widget>[
-              Icon(Icons.play_arrow),
-              SizedBox(
-                width: 8,
-              ),
-              Text("Play Game")
-            ],
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/background.jpg"),
+            fit: BoxFit.cover,
           ),
-          onPressed: () async {
-            // USERNAME POP UP
-            final username = await openDialog();
-            if (username == null || username.isEmpty) return;
+        ),
+        child: Center(
+          child: GlowButton(
+              color: Color.fromARGB(156, 196, 178, 0),
+              width: 150,
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: const <Widget>[
+                  Icon(Icons.play_arrow),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    "Play Game",
+                    style: TextStyle(fontSize: 20),
+                  )
+                ],
+              ),
+              onPressed: () async {
+                // USERNAME POP UP
+                final username = await openDialog();
+                if (username == null || username.isEmpty) return;
 
-            setState(() {
-              _username = username;
-            });
-          }
+                setState(() {
+                  _username = username;
+                });
+              }),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Color.fromRGBO(207, 75, 58, 75),
+        unselectedItemColor: Colors.white,
+        backgroundColor: Color(0xFF394F49),
         currentIndex: _currentIndex,
         onTap: (index) => {
           if (index != _currentIndex)

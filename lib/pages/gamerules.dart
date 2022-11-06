@@ -10,12 +10,20 @@ class GameRulesPage extends StatelessWidget {
           title: const Text("Rules of the game"),
         ),
         body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/background.jpg"),
+              fit: BoxFit.cover,
+            ),
+            color: Color.fromRGBO(156, 196, 178, 0.5),
+          ),
+
           padding: const EdgeInsets.all(15.0),
           alignment: Alignment.center,
           // width: 190.0,
           // height: 250.0,
           // margin: const EdgeInsets.all(50.0),
-          //color: Colors.blue[400],
+
           child: const Text(
             '''
         Start playing \n 
@@ -41,5 +49,4 @@ class GameRulesPage extends StatelessWidget {
           ),
         ));
   }
-  //////////////------------------END: code for pop up screen rules
 }
