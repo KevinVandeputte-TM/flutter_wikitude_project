@@ -43,7 +43,13 @@ class _HighScorePageState extends State {
     }
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Highscores Top 5"),
+          automaticallyImplyLeading: false,
+          title: Center(
+            child: const Text(
+              "TOP 5 Highscores",
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
         body: Container(
           decoration: BoxDecoration(
