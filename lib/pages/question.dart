@@ -59,6 +59,7 @@ class _QuestionPageState extends State<QuestionPage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Collecting item"),
+          automaticallyImplyLeading: false,
         ),
         body: Container(
           padding: const EdgeInsets.all(15.0),

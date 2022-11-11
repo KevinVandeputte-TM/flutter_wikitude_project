@@ -21,8 +21,6 @@ class ListTileWidget extends StatelessWidget {
           tileColor: Colors.transparent,
           leading: CircleAvatar(
               backgroundImage: AssetImage('assets/avatars/$avatar')),
-
-          //   title: Text("${userList[position].firstname} ${userList[position].lastname}"),
           title: Text(titletext),
           subtitle: Text(subtitletext),
         ),

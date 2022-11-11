@@ -31,9 +31,15 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: createMaterialColor(const Color(0xFF394F49)),
           textTheme: GoogleFonts.bebasNeueTextTheme(),
+          scaffoldBackgroundColor: const Color(0xFF394F49),
+          appBarTheme: AppBarTheme(
+            color: const Color(0xFF394F49),
+          ),
         ),
-        home: Scaffold(
-            body: const HomePage(), bottomNavigationBar: BottomBarWidget()));
+        home: SafeArea(
+            child: Scaffold(
+                body: const HomePage(),
+                bottomNavigationBar: BottomBarWidget())));
   }
 }
 

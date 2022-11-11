@@ -33,37 +33,11 @@ class _HomePageState extends State<HomePage> {
   String _username = "";
   late int _selectedavatar;
   final _avatars = [
-    0,
     1,
     2,
     3,
     4,
     5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-    29,
-    30
   ];
 
 //wikitude
@@ -111,7 +85,7 @@ class _HomePageState extends State<HomePage> {
         ),
         child: Center(
           child: GlowButton(
-              color: Color.fromARGB(156, 196, 178, 0),
+              color: Colors.amberAccent,
               width: 150,
               height: 60,
               child: Row(
@@ -139,30 +113,6 @@ class _HomePageState extends State<HomePage> {
               }),
         ),
       ),
-
-      /*  bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Color.fromRGBO(207, 75, 58, 75),
-        unselectedItemColor: Colors.white,
-        backgroundColor: Color(0xFF394F49),
-        currentIndex: _currentIndex,
-        onTap: (index) => {
-          if (index != _currentIndex)
-            {
-              _currentIndex = index,
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => pages[_currentIndex]))
-            }
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.scoreboard), label: "Highscores"),
-          BottomNavigationBarItem(icon: Icon(Icons.rule), label: "rules"),
-        ],
-      ),*/
     );
   }
 
@@ -206,7 +156,6 @@ class _HomePageState extends State<HomePage> {
       /* UPDATE PROVIDER */
       User u = result;
       context.read<UserProvider>().setUserData(u);
-      //Navigator.of(context).pop(usernameController.text);
       //Clear usernamecontroller
       usernameController.clear();
     });

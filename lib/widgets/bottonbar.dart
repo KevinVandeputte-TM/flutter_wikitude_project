@@ -19,6 +19,7 @@ class BottomBarWidget extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentScreenIndex,
         backgroundColor: Color(0xFF394F49),
+        showSelectedLabels: false,
         selectedIconTheme: IconThemeData(color: Colors.amberAccent, size: 40),
         selectedItemColor: Colors.amberAccent,
         unselectedIconTheme: IconThemeData(color: Colors.white),

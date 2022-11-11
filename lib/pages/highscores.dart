@@ -63,7 +63,6 @@ class _HighScorePageState extends State {
             itemCount: count,
             itemBuilder: (BuildContext context, int position) {
               return Card(
-                elevation: 2.0,
                 child: ListTileWidget(
                     avatar: "${userList[position].avatarID}.png",
                     subtitletext: "Player: ${userList[position].name}",
