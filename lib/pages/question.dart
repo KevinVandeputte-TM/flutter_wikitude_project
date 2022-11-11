@@ -57,9 +57,15 @@ class _QuestionPageState extends State<QuestionPage> {
       return const LoadingSpinnerWidget();
     }
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: const Text("Collecting item"),
           automaticallyImplyLeading: false,
+          title: Center(
+            child: const Text(
+              "Collect item",
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
         body: Container(
           padding: const EdgeInsets.all(15.0),

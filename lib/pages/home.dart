@@ -1,7 +1,7 @@
 import 'package:augmented_reality_plugin_wikitude/wikitude_plugin.dart';
 import 'package:augmented_reality_plugin_wikitude/wikitude_response.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_glow/flutter_glow.dart';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:got_app/models/user.dart';
 import 'package:got_app/pages/gamerules.dart';
@@ -77,42 +77,49 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/background.jpg"),
-            fit: BoxFit.cover,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/background.jpg"),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Center(
-          child: GlowButton(
-              color: Colors.amberAccent,
-              width: 150,
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: const <Widget>[
-                  Icon(Icons.play_arrow),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    "Play Game",
-                    style: TextStyle(fontSize: 20),
-                  )
-                ],
-              ),
-              onPressed: () async {
-                // USERNAME POP UP
-                final username = await openDialog();
-                if (username == null || username.isEmpty) return;
+          child: Center(
+            child: Container(
+                padding: EdgeInsets.all(5), //You can use EdgeInsets like above
 
-                setState(() {
-                  _username = username;
-                });
-              }),
-        ),
-      ),
+                decoration:
+                    BoxDecoration(shape: BoxShape.rectangle, boxShadow: [
+                  BoxShadow(
+                    color: Color(0xB3FFD640),
+                    blurRadius: 20.0,
+                    spreadRadius: 5.0,
+                  ),
+                ]),
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.black,
+                    backgroundColor: Color.fromARGB(255, 255, 195, 64),
+                  ),
+                  onPressed: () async {
+                    // USERNAME POP UP
+                    final username = await openDialog();
+                    if (username == null || username.isEmpty) return;
+
+                    setState(() {
+                      _username = username;
+                    });
+                  },
+                  icon: Icon(
+                    // <-- Icon
+                    Icons.play_arrow,
+                    size: 30.0,
+                  ),
+                  label: Text('Play Game',
+                      style: TextStyle(
+                        fontSize: 30.0,
+                      )), // <-- Text
+                )),
+          )),
     );
   }
 
