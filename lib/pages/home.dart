@@ -6,10 +6,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:got_app/models/user.dart';
 import 'package:got_app/pages/gamerules.dart';
 import 'package:got_app/pages/highscores.dart';
-import 'package:got_app/pages/question.dart';
+
 import 'package:got_app/providers/gameprovider.dart';
 import 'package:got_app/providers/userprovider.dart';
 import 'package:got_app/widgets/avatarselector.dart';
+
 import '../apis/edgeserver_api';
 
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   //navigation
-  int _currentIndex = 0;
+
   final pages = const [HomePage(), HighScorePage(), GameRulesPage()];
   late TextEditingController usernameController;
   //user and avatar
@@ -138,7 +139,8 @@ class _HomePageState extends State<HomePage> {
               }),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+
+      /*  bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Color.fromRGBO(207, 75, 58, 75),
         unselectedItemColor: Colors.white,
         backgroundColor: Color(0xFF394F49),
@@ -160,7 +162,7 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.scoreboard), label: "Highscores"),
           BottomNavigationBarItem(icon: Icon(Icons.rule), label: "rules"),
         ],
-      ),
+      ),*/
     );
   }
 
