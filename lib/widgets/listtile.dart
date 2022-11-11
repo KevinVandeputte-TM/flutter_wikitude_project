@@ -16,13 +16,11 @@ class ListTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        color: Color.fromRGBO(156, 196, 178, 0.5),
+        color: Colors.white,
         child: ListTile(
           tileColor: Colors.transparent,
           leading: CircleAvatar(
               backgroundImage: AssetImage('assets/avatars/$avatar')),
-
-          //   title: Text("${userList[position].firstname} ${userList[position].lastname}"),
           title: Text(titletext),
           subtitle: Text(subtitletext),
         ),

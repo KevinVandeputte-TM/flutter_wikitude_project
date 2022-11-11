@@ -109,7 +109,7 @@ class _ARShow3DModelAtGeolocationWidgetState
   }
 
   @override
-  void dispose() async{
+  void dispose() async {
     await architectWidget.pause();
     await architectWidget.destroy();
     WidgetsBinding.instance.removeObserver(this);

@@ -90,7 +90,7 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeObjectFromModelItems(String objectname){
+  void removeObjectFromModelItems(String objectname) {
     if (_modelItems.length == 1) {
       _modelItems.clear();
       setLevel();
@@ -101,10 +101,10 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setLevel() {
+  Future<void> setLevel() async {
     _level += 1;
     //get new models if level goes up.
-    fetchModelsfromApi();
+    await fetchModelsfromApi();
     notifyListeners();
   }
 
