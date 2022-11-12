@@ -21,7 +21,6 @@ class MessageBoxWidget {
       ..showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 5),
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           content: Stack(
@@ -48,8 +47,8 @@ class MessageBoxWidget {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                          const Text(
-                            "Oh snap!",
+                          Text(
+                            (type == "error") ? "Oh snap ..." : "",
                             style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                           Text(

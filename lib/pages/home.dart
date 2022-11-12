@@ -46,8 +46,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
+    debugPrint("TEST home widgetbinding INIT STATE");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      debugPrint("TEST home widgetbinding");
       Provider.of<GameProvider>(context, listen: false).fetchModelsfromApi();
     });
 

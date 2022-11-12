@@ -27,7 +27,7 @@ class GameProvider extends ChangeNotifier {
 //game
   List get collectedItems => _collectedItems;
   List get modelItems => _modelItems;
-  int get level => _level;
+  int get getLevel => _level;
 
 /*Setters*/
 //to start
@@ -69,13 +69,7 @@ class GameProvider extends ChangeNotifier {
     // add the string of the collected item into the collectedItems list
     _collectedItems.add(objectname);
     //if only one item is remaining in the modellist => level +1 and get new models?
-    if (_modelItems.length == 1) {
-      _modelItems.clear();
-      setLevel();
-    } else {
-      // remove the item form the modelitems
-      _modelItems.removeWhere((item) => item.objectname == objectname);
-    }
+    removeObjectFromModelItems(objectname);
     notifyListeners();
   }
 
@@ -101,7 +95,7 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setLevel() async {
+  void setLevel() async {
     _level += 1;
     //get new models if level goes up.
     await fetchModelsfromApi();
