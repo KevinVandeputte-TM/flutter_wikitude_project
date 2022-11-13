@@ -47,10 +47,11 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
+    // fetch the models from the api to load into the game later
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<GameProvider>(context, listen: false).fetchModelsfromApi();
     });
-
+    // set the highest possible level
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<GameProvider>(context, listen: false)
           .fetchHighestLevelFromApi();
@@ -58,7 +59,7 @@ class _HomePageState extends State<HomePage> {
 
     usernameController = TextEditingController();
     _selectedavatar = _avatars[0];
-//check permissions for gps
+    //check permissions for gps
     _checkServiceStatus();
   }
 
@@ -81,7 +82,6 @@ class _HomePageState extends State<HomePage> {
         child: Center(
           child: Container(
               padding: EdgeInsets.all(5), //You can use EdgeInsets like above
-
               decoration: BoxDecoration(shape: BoxShape.rectangle, boxShadow: [
                 BoxShadow(
                   color: Color(0xB3FFD640),
@@ -139,7 +139,7 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: [
             ElevatedButton.icon(
-              icon: Icon((context.watch<GameProvider>().canStart)
+              icon: Icon((context.watch<GameProvider>().canStart) //if game provider is ready show start button, otherwise show other label
                   ? Icons.play_arrow
                   : Icons.sync_rounded),
               label: Text(
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 15.0,
                   )),
               onPressed:
-                  (context.watch<GameProvider>().canStart) ? startgame : null,
+                  (context.watch<GameProvider>().canStart) ? startgame : null, //if game provider is ready allow start game
             )
           ],
         ),
@@ -169,8 +169,6 @@ class _HomePageState extends State<HomePage> {
       //Clear usernamecontroller
       usernameController.clear();
     });
-
-    //model en provider opvullen
 
     checkDeviceCompatibility().then((value) => {
           if (value.success)
