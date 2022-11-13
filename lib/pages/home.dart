@@ -27,7 +27,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   //navigation
-
   final pages = const [HomePage(), HighScorePage(), GameRulesPage()];
   late TextEditingController usernameController;
   //user and avatar
@@ -47,6 +46,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
     debugPrint("TEST home widgetbinding INIT STATE");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       debugPrint("TEST home widgetbinding");
@@ -134,15 +134,19 @@ class _HomePageState extends State<HomePage> {
               TextField(
                 autofocus: true,
                 decoration: const InputDecoration(hintText: "Username"),
-                controller: usernameController,
+                controller: usernameController, 
                 onSubmitted: (_) => startgame(),
               ),
             ],
           ),
           actions: [
-            TextButton(
-              onPressed: startgame,
-              child: const Text("Start game"),
+            ElevatedButton.icon(
+              icon: Icon( (context.watch<GameProvider>().canStart) ? Icons.play_arrow : Icons.sync_rounded),
+              label: Text( (context.watch<GameProvider>().canStart) ? 'Start Game' : "Getting your location...",
+                    style: TextStyle(
+                      fontSize: 15.0,
+                    )),
+              onPressed: (context.watch<GameProvider>().canStart) ? startgame : null,
             )
           ],
         ),

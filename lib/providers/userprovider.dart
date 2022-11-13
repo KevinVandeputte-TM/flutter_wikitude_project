@@ -53,7 +53,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   /* UPDATE THE PROVIDERS AND DB AFTER CORRECT ANSWER */
-  Future <void> updateGame(
+  void updateGame(
       BuildContext context, int? scoreOff, int? scoreDef, String modelname) async {
     GameProvider gameProvider =
         Provider.of<GameProvider>(context, listen: false);
@@ -81,5 +81,13 @@ class UserProvider extends ChangeNotifier {
 
       }
     });
+  }
+
+  void resetUser(){
+    _userid = 0;
+    _avatarID = 0;
+    _score = 0;
+    _username = "";
+    _email = "";
   }
 }

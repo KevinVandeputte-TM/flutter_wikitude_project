@@ -27,6 +27,7 @@ class _QuestionPageState extends State<QuestionPage> {
   late final List<String> _answers = ["", "", ""];
   bool _isLoading = true; //bool variable created
   bool _isAnswered = false; //Bool for checking if question is answered.
+  bool _isEndGame = false;
 
   @override
   void initState() {
@@ -78,7 +79,7 @@ class _QuestionPageState extends State<QuestionPage> {
                 padding: EdgeInsets.only(bottom: _padding, top: _padding),
                 child: Text(
                   // ignore: prefer_interpolation_to_compose_strings
-                  "Score: " + context.watch<UserProvider>().score.toString(),
+                  "Object value: " + context.watch<UserProvider>().score.toString(),
                   textScaleFactor: 3,
                 ),
               ),
@@ -103,38 +104,33 @@ class _QuestionPageState extends State<QuestionPage> {
   }
 
   /* CHECK ANSWER */
-
   //TO DO ---> END game message box. Idee = update game als antwoord correct is of removeobject dan messagebox tonen. eerst endgame check, dan juist of fout...
-  void _checkAnswer(String answer) async {
+  void _checkAnswer(String answer) {
+    // is answered to block other answers.
     _isAnswered = true;
-    debugPrint("performing check answer");
+
+    // Check if game is finished
+    if(context.read<GameProvider>().getLevel == context.read<GameProvider>().highestlevel && context.read<GameProvider>().modelItems.length == 1){
+      _isEndGame = true;
+    }
+
     // if given correct answer update User in DB and Provider. This is handled by de UserProvider
     if (answer == game?.correctanswer) {
-      // Show message
-      // MessageBoxWidget.show(
-      //     context,
-      //     "That was correct. You collected the ${widget.modelname}. Good luck on your quest!",
-      //     "success");
       // UPDATE GAME = USER IN PROVIDER AND DB + MODEL AND COLLECTEDITEMS IN GAME PROVIDER
-      await context.read<UserProvider>().updateGame(context, game?.scoreOffensive,
+      context.read<UserProvider>().updateGame(context, game?.scoreOffensive,
           game?.scoreDefensive, widget.modelname);
     } else {
       //Remove item form modelItems array
       context.read<GameProvider>().removeObjectFromModelItems(widget.modelname);
-      //Show snackbar message
-      // MessageBoxWidget.show(
-      //     context,
-      //     "That was a wrong answer. You didn't collect the ${widget.modelname}. Too bad! Good luck on your quest!",
-      //     "error");
     }
 
     /* When answer is processed show correct messagebox */
     // if level of game > highestlevel in game return endgame
     debugPrint("Showing message box");
-    if(context.read<GameProvider>().getLevel > context.read<GameProvider>().highestlevel){
+    if(_isEndGame){
         MessageBoxWidget.show(
           context,
-          "Congratulations! That's it. You collected all the items. You will be directed to the homepage",
+          "Game completed! There are no new items for you to find. You will be directed to the homepage",
           "endgame");
       // else
     } else {
