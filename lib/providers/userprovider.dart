@@ -4,15 +4,13 @@ import 'package:got_app/apis/edgeserver_api';
 import 'package:got_app/providers/gameprovider.dart';
 import 'package:provider/provider.dart';
 
-
-
-class UserProvider extends ChangeNotifier{
-  int _userid = 28;
+class UserProvider extends ChangeNotifier {
+  int _userid = 0;
   int _avatarID = 0;
-  int _score = 30;
-  String _username = "userdata";
-  String _email = "userdata@test.com";  
-  
+  int _score = 0;
+  String _username = "";
+  String _email = "";
+
   //GETTERS
   int get userid => _userid;
   int get score => _score;
@@ -21,7 +19,7 @@ class UserProvider extends ChangeNotifier{
   String get email => _email;
 
   // METHODS
-  void setUserData(User user){
+  void setUserData(User user) {
     setUserID(user.userID);
     setUsername(user.name);
     setAvatarID(user.avatarID);
@@ -29,43 +27,50 @@ class UserProvider extends ChangeNotifier{
     setEmail(user.email);
   }
 
-  void setUserID(int id){
+  void setUserID(int id) {
     _userid = id;
     notifyListeners();
   }
 
-  void setScore(int? score){
+  void setScore(int? score) {
     _score = score!;
     notifyListeners();
   }
 
-  void setAvatarID(int avatarID){
+  void setAvatarID(int avatarID) {
     _avatarID = avatarID;
     notifyListeners();
   }
 
-  void setUsername(String name){
+  void setUsername(String name) {
     _username = name;
     notifyListeners();
   }
 
-  void setEmail(String email){
+  void setEmail(String email) {
     _email = email;
     notifyListeners();
   }
 
   /* UPDATE THE PROVIDERS AND DB AFTER CORRECT ANSWER */
-  void updateGame(BuildContext context, int? scoreOff, int? scoreDef, String modelname){
-    GameProvider gameProvider = Provider.of<GameProvider>(context ,listen: false);
+  void updateGame(
+      BuildContext context, int? scoreOff, int? scoreDef, String modelname) {
+    GameProvider gameProvider =
+        Provider.of<GameProvider>(context, listen: false);
     //Calculate total score of user
     int total = _score + scoreOff! + scoreDef!;
     // The service needs an user object. Let's create one with score as total
-    User u = User(userID: _userid, name: _username, email: _email, avatarID: _avatarID, score: total);
+    User u = User(
+        userID: _userid,
+        name: _username,
+        email: _email,
+        avatarID: _avatarID,
+        score: total);
     // Send put request
-    EdgeserverApi.updateUser(u).then((result){
+    EdgeserverApi.updateUser(u).then((result) {
       // If put is successful then update the provider
       // ignore: unrelated_type_equality_checks
-      if(result == true){
+      if (result == true) {
         //update the score
         setScore(total);
         // Adjust the game settings when the user is updated => See GameProvider method
@@ -73,11 +78,8 @@ class UserProvider extends ChangeNotifier{
         // else display error message?
       } else {
         //TO DO
-        
+
       }
-
     });
-
   }
-
 }

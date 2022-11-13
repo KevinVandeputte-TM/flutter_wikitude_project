@@ -6,9 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:got_app/models/armodelresponse.dart';
+import 'package:got_app/pages/home.dart';
 import 'package:got_app/pages/question.dart';
 
 import 'package:got_app/providers/gameprovider.dart';
+import 'package:got_app/providers/userprovider.dart';
 import 'package:provider/provider.dart';
 
 import '../models/flutterwikitudeexchange.dart';
@@ -88,10 +90,83 @@ class _ARShow3DModelAtGeolocationWidgetState
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(color: Colors.black),
-      child: architectWidget, //ar widget
-    );
+    return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Center(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                // const Text(
+                //   "Look around to find items ",
+                //   textAlign: TextAlign.center,
+                // ),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      foregroundColor: Colors.white,
+                      side: BorderSide.none),
+                  onPressed: () {
+                    // SystemChannels.platform.invokeMethod("SystemNavigator.pop");
+                    positionStream.cancel();
+                    dispose();
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (_) => HomePage()));
+                  },
+
+                  icon: Icon(
+                    // <-- Icon
+                    Icons.close,
+                    size: 25.0,
+                  ),
+                  label: Text('close',
+                      style: TextStyle(
+                        fontSize: 15.0,
+                      )), // <-- Text
+                )
+              ])),
+        ),
+        body: Container(
+          decoration: const BoxDecoration(color: Colors.black),
+          child: architectWidget, //ar widget
+        ),
+        bottomNavigationBar: BottomAppBar(
+          color: Color(0xFF394F49),
+          child: Container(
+            height: 70.0,
+            margin: EdgeInsets.only(top: 10),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "LEVEL:",
+                        style: TextStyle(color: Colors.white, fontSize: 15.0),
+                      ),
+                      Text(context.read<GameProvider>().getLevel.toString(),
+                          style: TextStyle(color: Colors.white, fontSize: 25.0))
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "SCORE:",
+                        style: TextStyle(color: Colors.white, fontSize: 15.0),
+                      ),
+                      Text(
+                        context.read<UserProvider>().score.toString(),
+                        style: TextStyle(color: Colors.white, fontSize: 25.0),
+                      )
+                    ],
+                  )
+                ]),
+          ),
+        ));
   }
 
   @override
@@ -155,7 +230,10 @@ class _ARShow3DModelAtGeolocationWidgetState
   void OnJSONObjectReceived(Map<String, dynamic> jsonObject) async {
     var clickedmodel = ARModelResponse.fromJson(jsonObject);
     await positionStream.cancel();
+    await architectWidget.pause();
+    await architectWidget.destroy();
     dispose();
+
     //await architectWidget.pause();
 
     await Future.delayed(const Duration(milliseconds: 500));

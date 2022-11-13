@@ -15,6 +15,7 @@ import '../apis/edgeserver_api';
 
 import 'package:provider/provider.dart';
 
+import '../widgets/bottonbar.dart';
 import 'argame.dart';
 
 class HomePage extends StatefulWidget {
@@ -46,8 +47,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
+    debugPrint("TEST home widgetbinding INIT STATE");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      debugPrint("TEST home widgetbinding");
       Provider.of<GameProvider>(context, listen: false).fetchModelsfromApi();
     });
 

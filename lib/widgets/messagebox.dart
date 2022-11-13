@@ -21,14 +21,13 @@ class MessageBoxWidget {
       ..showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 5),
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           content: Stack(
             clipBehavior: Clip.none,
             children: [
               Container(
-                height: 100,
+                height: (type == "endgame") ? 200 : 100,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -36,7 +35,9 @@ class MessageBoxWidget {
                         ? Color.fromRGBO(207, 75, 58, 1)
                         : (type == "success")
                             ? Color.fromRGBO(156, 196, 178, 1)
-                            : Colors.transparent),
+                            : (type == "endgame")
+                                ? Color.fromARGB(255, 255, 195, 64)
+                                : Colors.transparent),
                 child: Row(
                   children: [
                     Image(
@@ -48,8 +49,8 @@ class MessageBoxWidget {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                          const Text(
-                            "Oh snap!",
+                          Text(
+                            (type == "error") ? "Oh snap ..." : "",
                             style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                           Text(

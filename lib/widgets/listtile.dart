@@ -14,16 +14,14 @@ class ListTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
-        color: Colors.white,
-        child: ListTile(
-          tileColor: Colors.transparent,
-          leading: CircleAvatar(
-              backgroundImage: AssetImage('assets/avatars/$avatar')),
-          title: Text(titletext),
-          subtitle: Text(subtitletext),
-        ),
+    return Container(
+      color: Color.fromRGBO(156, 196, 178, 0.90),
+      child: ListTile(
+        tileColor: Colors.transparent,
+        leading:
+            CircleAvatar(backgroundImage: AssetImage('assets/avatars/$avatar')),
+        title: Text(titletext),
+        subtitle: Text(subtitletext),
       ),
     );
   }

@@ -1,4 +1,9 @@
  var World = {
+     isHomeClicked: false,
+
+     isHomeClickedFn: function isHomeClickedFn(value) {
+         World.isHomeClicked = value;
+     },
 
      //objectsnames => contained by API call
      objectsNames: [
@@ -7,6 +12,7 @@
 
      //startcoordinates => contained by API call
      startPosition: {},
+
      //Coordinates => push the user position coordinates
      // coordinates({lat, lon, alt, acc})
      coordinates: [],
