@@ -80,6 +80,7 @@ class UserProvider extends ChangeNotifier {
     });
   }
 
+  // reset the provider
   void resetUser() {
     _userid = 0;
     _avatarID = 0;

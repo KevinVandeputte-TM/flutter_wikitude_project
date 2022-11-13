@@ -23,6 +23,7 @@ class _QuestionPageState extends State<QuestionPage> {
   final double _padding = 15.0;
   //local state variable to contain the question.
   Game? game;
+  int _value = 0;
   String _question = "";
   late final List<String> _answers = ["", "", ""];
   bool _isLoading = true; //bool variable created
@@ -46,6 +47,7 @@ class _QuestionPageState extends State<QuestionPage> {
         _answers[1] = result.answertwo;
         _answers[2] = result.answerthree;
         _isLoading = false;
+        _value = result.scoreDefensive + result.scoreOffensive;
       });
       //Shuffle the answers list
       _answers.shuffle();
@@ -79,8 +81,7 @@ class _QuestionPageState extends State<QuestionPage> {
                 padding: EdgeInsets.only(bottom: _padding, top: _padding),
                 child: Text(
                   // ignore: prefer_interpolation_to_compose_strings
-                  "Object value: " +
-                      context.watch<UserProvider>().score.toString(),
+                  "Object value: " + _value.toString(),
                   textScaleFactor: 3,
                 ),
               ),
@@ -105,7 +106,6 @@ class _QuestionPageState extends State<QuestionPage> {
   }
 
   /* CHECK ANSWER */
-  //TO DO ---> END game message box. Idee = update game als antwoord correct is of removeobject dan messagebox tonen. eerst endgame check, dan juist of fout...
   void _checkAnswer(String answer) {
     // is answered to block other answers.
     _isAnswered = true;

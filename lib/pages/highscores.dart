@@ -25,6 +25,7 @@ class _HighScorePageState extends State {
     _getScores();
   }
 
+  // Get highscores
   void _getScores() async {
     EdgeserverApi.fetchScore().then((result) {
       setState(() {

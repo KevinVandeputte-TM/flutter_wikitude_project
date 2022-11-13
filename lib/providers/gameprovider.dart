@@ -16,11 +16,11 @@ class GameProvider extends ChangeNotifier {
   //for game
   final List _collectedItems = [];
   final List<ModelItem> _modelItems = [];
-  int _level = 2;
-  int _highestlevel = 2;
+  int _level = 1;
+  int _highestlevel = 1;
 
-/*Getters */
-//to start game
+  /*Getters */
+  //to start game
   bool get getServicestatus => _servicestatus;
   bool get getHasPermission => _haspermission;
   LocationPermission get getLocationpermission => _locationPermission;
@@ -75,7 +75,7 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-//-------------------------------------------game
+  //-------------------------------------------game
   /* Set collecteditems and modelitems */
   void setCollectedItems(String objectname) {
     // add the string of the collected item into the collectedItems list
@@ -97,7 +97,7 @@ class GameProvider extends ChangeNotifier {
   }
 
   void removeObjectFromModelItems(String objectname) {
-//if modelitems contains 1 item => clear items and update level
+    //if modelitems contains 1 item => clear items and update level
     if (_modelItems.length == 1) {
       _modelItems.clear();
       setLevel();
@@ -109,14 +109,14 @@ class GameProvider extends ChangeNotifier {
   }
 
   void setLevel() async {
-//level +1
+    //level +1
     _level += 1;
     //get new models if level goes up.
     await fetchModelsfromApi();
     notifyListeners();
   }
 
-/* API calls to gather data */
+  /* API calls to gather data */
   Future<void> fetchModelsfromApi() async {
     if (_modelItems.isEmpty) {
       //get level set in the provider
@@ -131,13 +131,15 @@ class GameProvider extends ChangeNotifier {
     }
   }
 
+  // Getting highest level from API to determine end of game later on
   Future<void> fetchHighestLevelFromApi() async {
     await EdgeserverApi.fetchHighestLevel().then((result) {
-      //  _highestlevel = result.level;
+      _highestlevel = result.level;
     });
     notifyListeners();
   }
 
+  // Reset the game provider
   void resetGame() {
     _level = 1;
     _collectedItems.clear();
