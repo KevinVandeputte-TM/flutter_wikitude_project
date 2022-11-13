@@ -112,4 +112,19 @@ class EdgeserverApi {
     }
   }
 
+  // Get highest level
+  static Future<Game> fetchHighestLevel() async{
+    var url = Uri.https(server, "/highestlevel");
+
+    final response = await http.get(url);
+
+    //check response
+    if (response.statusCode == 200){
+      return Game.fromJson(jsonDecode(response.body));
+    } else{
+      throw Exception("Failed to fetch highes level");
+    }
+
+  }
+
 }

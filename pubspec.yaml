@@ -92,6 +92,7 @@ flutter:
     - assets/icons/
     - assets/icons/error.png
     - assets/icons/success.png
+    - assets/icons/endgame.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

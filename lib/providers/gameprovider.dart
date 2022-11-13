@@ -16,7 +16,8 @@ class GameProvider extends ChangeNotifier {
   //for game
   final List _collectedItems = [];
   final List<ModelItem> _modelItems = [];
-  int _level = 1;
+  int _level = 2;
+  int _highestlevel = 2;
 
 /*Getters */
 //to start game
@@ -29,6 +30,7 @@ class GameProvider extends ChangeNotifier {
   List get collectedItems => _collectedItems;
   List get modelItems => _modelItems;
   int get getLevel => _level;
+  int get highestlevel => _highestlevel;
 
 /*Setters*/
 //to start
@@ -73,6 +75,7 @@ class GameProvider extends ChangeNotifier {
 //-------------------------------------------game
   /* Set collecteditems and modelitems */
   void setCollectedItems(String objectname) {
+    debugPrint("Adding to collected items");
     // add the string of the collected item into the collectedItems list
     _collectedItems.add(objectname);
     //if only one item is remaining in the modellist => level +1 and get new models?
@@ -92,6 +95,7 @@ class GameProvider extends ChangeNotifier {
   }
 
   void removeObjectFromModelItems(String objectname) {
+    debugPrint("Removing from model items");
     if (_modelItems.length == 1) {
       _modelItems.clear();
       setLevel();
@@ -103,6 +107,7 @@ class GameProvider extends ChangeNotifier {
   }
 
   void setLevel() async {
+    debugPrint("Setting game level");
     _level += 1;
     //get new models if level goes up.
     await fetchModelsfromApi();
@@ -123,5 +128,12 @@ class GameProvider extends ChangeNotifier {
         }
       });
     }
+  }
+
+  Future<void> fetchHighestLevelFromApi() async{
+    await EdgeserverApi.fetchHighestLevel().then((result){
+    //  _highestlevel = result.level;
+    });
+    notifyListeners();
   }
 }

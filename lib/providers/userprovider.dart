@@ -53,8 +53,8 @@ class UserProvider extends ChangeNotifier {
   }
 
   /* UPDATE THE PROVIDERS AND DB AFTER CORRECT ANSWER */
-  void updateGame(
-      BuildContext context, int? scoreOff, int? scoreDef, String modelname) {
+  Future <void> updateGame(
+      BuildContext context, int? scoreOff, int? scoreDef, String modelname) async {
     GameProvider gameProvider =
         Provider.of<GameProvider>(context, listen: false);
     //Calculate total score of user
