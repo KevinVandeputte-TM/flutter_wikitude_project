@@ -53,6 +53,11 @@ class _HomePageState extends State<HomePage> {
       Provider.of<GameProvider>(context, listen: false).fetchModelsfromApi();
     });
 
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      debugPrint("TEST home widgetbinding");
+      Provider.of<GameProvider>(context, listen: false).fetchHighestLevelFromApi();
+    });
+
     usernameController = TextEditingController();
     _selectedavatar = _avatars[0];
 //check permissions for gps

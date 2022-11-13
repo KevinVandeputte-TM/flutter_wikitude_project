@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:got_app/pages/argame.dart';
+import 'package:got_app/pages/home.dart';
 
 class MessageBoxWidget {
   final String message;
@@ -27,7 +28,7 @@ class MessageBoxWidget {
             clipBehavior: Clip.none,
             children: [
               Container(
-                height: (type == "endgame") ? 200 : 100,
+                height: (type == "endgame") ? MediaQuery.of(context).size.height : 100,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -58,7 +59,7 @@ class MessageBoxWidget {
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                               fontSize: 12,
                             ),
                           ),
@@ -69,9 +70,23 @@ class MessageBoxWidget {
             ],
           ),
         ),
-      ).closed.then((_) => Navigator.push(
+      )
+      .closed.then((_) {
+        if(type != 'endgame'){
+          Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const ArGamePage()),
-          ));
+          );
+        } else {
+          //reset game
+
+          // go to home
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+
+        }
+      });
   }
 }

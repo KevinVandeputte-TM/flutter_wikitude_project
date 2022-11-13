@@ -103,26 +103,54 @@ class _QuestionPageState extends State<QuestionPage> {
   }
 
   /* CHECK ANSWER */
-  void _checkAnswer(String answer) {
+
+  //TO DO ---> END game message box. Idee = update game als antwoord correct is of removeobject dan messagebox tonen. eerst endgame check, dan juist of fout...
+  void _checkAnswer(String answer) async {
     _isAnswered = true;
+    debugPrint("performing check answer");
     // if given correct answer update User in DB and Provider. This is handled by de UserProvider
     if (answer == game?.correctanswer) {
       // Show message
-      MessageBoxWidget.show(
-          context,
-          "That was correct. You collected the ${widget.modelname}. Good luck on your quest!",
-          "success");
+      // MessageBoxWidget.show(
+      //     context,
+      //     "That was correct. You collected the ${widget.modelname}. Good luck on your quest!",
+      //     "success");
       // UPDATE GAME = USER IN PROVIDER AND DB + MODEL AND COLLECTEDITEMS IN GAME PROVIDER
-      context.read<UserProvider>().updateGame(context, game?.scoreOffensive,
+      await context.read<UserProvider>().updateGame(context, game?.scoreOffensive,
           game?.scoreDefensive, widget.modelname);
     } else {
       //Remove item form modelItems array
       context.read<GameProvider>().removeObjectFromModelItems(widget.modelname);
       //Show snackbar message
-      MessageBoxWidget.show(
+      // MessageBoxWidget.show(
+      //     context,
+      //     "That was a wrong answer. You didn't collect the ${widget.modelname}. Too bad! Good luck on your quest!",
+      //     "error");
+    }
+
+    /* When answer is processed show correct messagebox */
+    // if level of game > highestlevel in game return endgame
+    debugPrint("Showing message box");
+    if(context.read<GameProvider>().getLevel > context.read<GameProvider>().highestlevel){
+        MessageBoxWidget.show(
+          context,
+          "Congratulations! That's it. You collected all the items. You will be directed to the homepage",
+          "endgame");
+      // else
+    } else {
+      // if answer was correct show success message
+      if(answer == game?.correctanswer){
+        MessageBoxWidget.show(
+          context,
+          "That was correct. You collected the ${widget.modelname}. Good luck on your quest!",
+          "success");
+        // else - show error message
+      } else {
+        MessageBoxWidget.show(
           context,
           "That was a wrong answer. You didn't collect the ${widget.modelname}. Too bad! Good luck on your quest!",
           "error");
+      }
     }
   }
 }
