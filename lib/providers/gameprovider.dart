@@ -10,7 +10,8 @@ class GameProvider extends ChangeNotifier {
   bool _haspermission = false;
   late LocationPermission _locationPermission;
 
-  late StartCoordinates _startPosition;
+  StartCoordinates _startPosition =
+      StartCoordinates(lat: 0, lon: 0, alt: 0, acc: 0);
 
   //for game
   final List _collectedItems = [];
@@ -37,10 +38,16 @@ class GameProvider extends ChangeNotifier {
 
   Future<void> setHaspermission(status) async {
     _haspermission = status;
-    if (_haspermission) {
-      debugPrint("WE HAVE PERMISSIONS: PROV");
 
-      setStartPosition();
+    if (_haspermission) {
+      if (_startPosition.lat == 0 &&
+          _startPosition.lon == 0 &&
+          _startPosition.acc == 0 &&
+          _startPosition.alt == 0) {
+        debugPrint("WE HAVE PERMISSIONS: PROV");
+
+        setStartPosition();
+      }
     }
   }
 
@@ -104,13 +111,17 @@ class GameProvider extends ChangeNotifier {
 
 /* API calls to gather data */
   Future<void> fetchModelsfromApi() async {
-    //get level set in the provider
-    await EdgeserverApi.fetchModelsByLevel(_level).then((result) {
-      /* UPDATE PROVIDER */
-      result.forEach((element) {
-        setModelItems(element.objectName, element.x, element.y, false);
-        debugPrint("Set models in modelitems ${element.objectName}");
+    if (_modelItems.isEmpty) {
+      //get level set in the provider
+      await EdgeserverApi.fetchModelsByLevel(_level).then((result) {
+        if (_modelItems.isEmpty) {
+          /* UPDATE PROVIDER */
+          result.forEach((element) {
+            setModelItems(element.objectName, element.x, element.y, false);
+            debugPrint("Set models in modelitems ${element.objectName}");
+          });
+        }
       });
-    });
+    }
   }
 }

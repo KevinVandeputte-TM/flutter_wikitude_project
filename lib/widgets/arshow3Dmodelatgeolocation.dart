@@ -230,7 +230,10 @@ class _ARShow3DModelAtGeolocationWidgetState
   void OnJSONObjectReceived(Map<String, dynamic> jsonObject) async {
     var clickedmodel = ARModelResponse.fromJson(jsonObject);
     await positionStream.cancel();
+    await architectWidget.pause();
+    await architectWidget.destroy();
     dispose();
+
     //await architectWidget.pause();
 
     await Future.delayed(const Duration(milliseconds: 500));

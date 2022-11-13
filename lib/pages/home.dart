@@ -15,6 +15,7 @@ import '../apis/edgeserver_api';
 
 import 'package:provider/provider.dart';
 
+import '../widgets/bottonbar.dart';
 import 'argame.dart';
 
 class HomePage extends StatefulWidget {

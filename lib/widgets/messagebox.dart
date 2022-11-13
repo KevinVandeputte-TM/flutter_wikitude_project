@@ -27,7 +27,7 @@ class MessageBoxWidget {
             clipBehavior: Clip.none,
             children: [
               Container(
-                height: 100,
+                height: (type == "endgame") ? 200 : 100,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -35,7 +35,9 @@ class MessageBoxWidget {
                         ? Color.fromRGBO(207, 75, 58, 1)
                         : (type == "success")
                             ? Color.fromRGBO(156, 196, 178, 1)
-                            : Colors.transparent),
+                            : (type == "endgame")
+                                ? Color.fromARGB(255, 255, 195, 64)
+                                : Colors.transparent),
                 child: Row(
                   children: [
                     Image(
