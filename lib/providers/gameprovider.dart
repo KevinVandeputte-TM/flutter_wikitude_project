@@ -25,12 +25,15 @@ class GameProvider extends ChangeNotifier {
   bool get getHasPermission => _haspermission;
   LocationPermission get getLocationpermission => _locationPermission;
   StartCoordinates get getStartPosition => _startPosition;
+  bool _canStart = false;
 
 //game
   List get collectedItems => _collectedItems;
   List get modelItems => _modelItems;
   int get getLevel => _level;
   int get highestlevel => _highestlevel;
+  bool get canStart => _canStart;
+
 
 /*Setters*/
 //to start
@@ -63,11 +66,19 @@ class GameProvider extends ChangeNotifier {
 
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position positionStart) {
-      _startPosition = StartCoordinates(
-          lat: positionStart.latitude,
-          lon: positionStart.longitude,
-          alt: positionStart.altitude,
-          acc: positionStart.accuracy);
+          //Set start coordinates
+          _startPosition = StartCoordinates(
+            lat: positionStart.latitude,
+            lon: positionStart.longitude,
+            alt: positionStart.altitude,
+            acc: positionStart.accuracy
+          );
+
+          //give go for start
+          _canStart = true;
+          debugPrint("You can start the game");
+          
+
     });
     notifyListeners();
   }
@@ -136,4 +147,14 @@ class GameProvider extends ChangeNotifier {
     });
     notifyListeners();
   }
+
+  void resetGame(){
+    _level = 1;
+    _collectedItems.clear();
+    _modelItems.clear();
+    _startPosition = StartCoordinates(lat: 0, lon: 0, alt: 0, acc: 0);
+    _canStart = false;
+    setStartPosition();
+  }
+
 }
