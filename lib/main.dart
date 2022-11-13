@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:got_app/pages/gamerules.dart';
+import 'package:got_app/pages/highscores.dart';
 import 'package:got_app/pages/home.dart';
+import 'package:got_app/pages/question.dart';
 import 'package:got_app/providers/gameprovider.dart';
 import 'package:got_app/providers/screenindexprovider.dart';
 import 'package:got_app/providers/userprovider.dart';
@@ -36,10 +39,32 @@ class MyApp extends StatelessWidget {
             color: const Color(0xFF394F49),
           ),
         ),
-        home: SafeArea(
-            child: Scaffold(
-                body: const HomePage(),
-                bottomNavigationBar: BottomBarWidget())));
+        initialRoute: '/home',
+        routes: {
+          // When navigating to the "/" route, build the HomeScreen widget.
+          '/home': (BuildContext context) {
+            return SafeArea(
+                child: Scaffold(
+                    appBar: AppBar(
+                      automaticallyImplyLeading: false,
+                      title: Center(
+                        child: const Text(
+                          "A game of thrones",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    body: HomePage(),
+                    bottomNavigationBar: BottomBarWidget()));
+          },
+          // When navigating to the "/second" route, build the SecondScreen widget.
+          '/highscores': (context) => HighScorePage(),
+          '/rules': (context) => GameRulesPage(),
+        });
+    // home: SafeArea(
+    //     child: Scaffold(
+    //         body: const HomePage(),
+    //         bottomNavigationBar: BottomBarWidget())));
   }
 }
 
