@@ -79,7 +79,8 @@ class _QuestionPageState extends State<QuestionPage> {
                 padding: EdgeInsets.only(bottom: _padding, top: _padding),
                 child: Text(
                   // ignore: prefer_interpolation_to_compose_strings
-                  "Object value: " + context.watch<UserProvider>().score.toString(),
+                  "Object value: " +
+                      context.watch<UserProvider>().score.toString(),
                   textScaleFactor: 3,
                 ),
               ),
@@ -110,7 +111,9 @@ class _QuestionPageState extends State<QuestionPage> {
     _isAnswered = true;
 
     // Check if game is finished
-    if(context.read<GameProvider>().getLevel == context.read<GameProvider>().highestlevel && context.read<GameProvider>().modelItems.length == 1){
+    if (context.read<GameProvider>().getLevel ==
+            context.read<GameProvider>().highestlevel &&
+        context.read<GameProvider>().modelItems.length == 1) {
       _isEndGame = true;
     }
 
@@ -126,26 +129,25 @@ class _QuestionPageState extends State<QuestionPage> {
 
     /* When answer is processed show correct messagebox */
     // if level of game > highestlevel in game return endgame
-    debugPrint("Showing message box");
-    if(_isEndGame){
-        MessageBoxWidget.show(
+    if (_isEndGame) {
+      MessageBoxWidget.show(
           context,
           "Game completed! There are no new items for you to find. You will be directed to the homepage",
           "endgame");
       // else
     } else {
       // if answer was correct show success message
-      if(answer == game?.correctanswer){
+      if (answer == game?.correctanswer) {
         MessageBoxWidget.show(
-          context,
-          "That was correct. You collected the ${widget.modelname}. Good luck on your quest!",
-          "success");
+            context,
+            "That was correct. You collected the ${widget.modelname}. Good luck on your quest!",
+            "success");
         // else - show error message
       } else {
         MessageBoxWidget.show(
-          context,
-          "That was a wrong answer. You didn't collect the ${widget.modelname}. Too bad! Good luck on your quest!",
-          "error");
+            context,
+            "That was a wrong answer. You didn't collect the ${widget.modelname}. Too bad! Good luck on your quest!",
+            "error");
       }
     }
   }

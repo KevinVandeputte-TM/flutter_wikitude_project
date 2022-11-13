@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:got_app/models/armodelresponse.dart';
-import 'package:got_app/pages/home.dart';
 import 'package:got_app/pages/question.dart';
 
 import 'package:got_app/providers/gameprovider.dart';
@@ -81,7 +80,6 @@ class _ARShow3DModelAtGeolocationWidgetState
     positionStream =
         Geolocator.getPositionStream(locationSettings: locationSettings)
             .listen((Position position) {
-      debugPrint("---*FLUTTER  The position: $position");
       //UPDATING THE AR.CONTEXT
       architectWidget.setLocation(position.latitude, position.longitude,
           position.altitude, position.accuracy);
@@ -204,18 +202,11 @@ class _ARShow3DModelAtGeolocationWidgetState
         (result) => OnJSONObjectReceived(result));
   }
 
-  Future<void> onLoadFailed(String error) async {
-    debugPrint("---*FLUTTER Failed to load Architect World");
-    debugPrint(error);
-  }
+  Future<void> onLoadFailed(String error) async {}
 
   Future<void> onLoadSuccess() async {
-    debugPrint("---*FLUTTER Successfully loaded Architect World");
-
     //1. load the modelitems in wikitude
     for (ModelItem item in context.read<GameProvider>().modelItems) {
-      debugPrint(
-          "Call JS to pass Models to he getmodels function : ${item.objectname}");
       //give to JS from wikitude
       architectWidget.callJavascript(
           'World.getModelNames("${item.objectname}","${item.relativeLat}", "${item.relativeLon}")');
@@ -224,7 +215,6 @@ class _ARShow3DModelAtGeolocationWidgetState
     //2. load the startcoordinates
     StartCoordinates startcoordinates =
         context.read<GameProvider>().getStartPosition;
-    debugPrint("Call JS to pass the first position");
     architectWidget.callJavascript(
         'World.setStartPosition("${startcoordinates.lat}","${startcoordinates.lon}","${startcoordinates.alt}","${startcoordinates.acc}")');
   }

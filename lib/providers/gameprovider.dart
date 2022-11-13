@@ -34,7 +34,6 @@ class GameProvider extends ChangeNotifier {
   int get highestlevel => _highestlevel;
   bool get canStart => _canStart;
 
-
 /*Setters*/
 //to start
   void setServicestatus(status) {
@@ -49,8 +48,7 @@ class GameProvider extends ChangeNotifier {
           _startPosition.lon == 0 &&
           _startPosition.acc == 0 &&
           _startPosition.alt == 0) {
-        debugPrint("WE HAVE PERMISSIONS: PROV");
-
+        //if permissions are oke => set startposition
         setStartPosition();
       }
     }
@@ -62,23 +60,17 @@ class GameProvider extends ChangeNotifier {
 
   /* GETTING THE USER LOCATION 1 time > for setting initial position and remembering it the relaunch the wikitude environment*/
   void setStartPosition() async {
-    debugPrint("2. set the StartPosition _ PROV");
-
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position positionStart) {
-          //Set start coordinates
-          _startPosition = StartCoordinates(
-            lat: positionStart.latitude,
-            lon: positionStart.longitude,
-            alt: positionStart.altitude,
-            acc: positionStart.accuracy
-          );
+      //Set start coordinates
+      _startPosition = StartCoordinates(
+          lat: positionStart.latitude,
+          lon: positionStart.longitude,
+          alt: positionStart.altitude,
+          acc: positionStart.accuracy);
 
-          //give go for start
-          _canStart = true;
-          debugPrint("You can start the game");
-          
-
+      //give go for start
+      _canStart = true;
     });
     notifyListeners();
   }
@@ -86,7 +78,6 @@ class GameProvider extends ChangeNotifier {
 //-------------------------------------------game
   /* Set collecteditems and modelitems */
   void setCollectedItems(String objectname) {
-    debugPrint("Adding to collected items");
     // add the string of the collected item into the collectedItems list
     _collectedItems.add(objectname);
     //if only one item is remaining in the modellist => level +1 and get new models?
@@ -96,17 +87,17 @@ class GameProvider extends ChangeNotifier {
 
   void setModelItems(
       String item, double relativeX, double relativeY, bool isClicked) {
+    //add items to array
     _modelItems.add(ModelItem(
         objectname: item,
         relativeLat: relativeX,
         relativeLon: relativeY,
         isClicked: false));
-    debugPrint("SETMODELITEMS:$item and is clicked$isClicked");
     notifyListeners();
   }
 
   void removeObjectFromModelItems(String objectname) {
-    debugPrint("Removing from model items");
+//if modelitems contains 1 item => clear items and update level
     if (_modelItems.length == 1) {
       _modelItems.clear();
       setLevel();
@@ -118,7 +109,7 @@ class GameProvider extends ChangeNotifier {
   }
 
   void setLevel() async {
-    debugPrint("Setting game level");
+//level +1
     _level += 1;
     //get new models if level goes up.
     await fetchModelsfromApi();
@@ -134,21 +125,20 @@ class GameProvider extends ChangeNotifier {
           /* UPDATE PROVIDER */
           result.forEach((element) {
             setModelItems(element.objectName, element.x, element.y, false);
-            debugPrint("Set models in modelitems ${element.objectName}");
           });
         }
       });
     }
   }
 
-  Future<void> fetchHighestLevelFromApi() async{
-    await EdgeserverApi.fetchHighestLevel().then((result){
-    //  _highestlevel = result.level;
+  Future<void> fetchHighestLevelFromApi() async {
+    await EdgeserverApi.fetchHighestLevel().then((result) {
+      //  _highestlevel = result.level;
     });
     notifyListeners();
   }
 
-  void resetGame(){
+  void resetGame() {
     _level = 1;
     _collectedItems.clear();
     _modelItems.clear();
@@ -156,5 +146,4 @@ class GameProvider extends ChangeNotifier {
     _canStart = false;
     setStartPosition();
   }
-
 }
