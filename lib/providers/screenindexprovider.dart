@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+//bottomnavigation bar
 class ScreenIndexProvider extends ChangeNotifier {
   int indexOfCurrentScreen = 0;
 

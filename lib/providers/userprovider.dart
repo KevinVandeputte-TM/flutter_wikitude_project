@@ -53,8 +53,8 @@ class UserProvider extends ChangeNotifier {
   }
 
   /* UPDATE THE PROVIDERS AND DB AFTER CORRECT ANSWER */
-  void updateGame(
-      BuildContext context, int? scoreOff, int? scoreDef, String modelname) async {
+  void updateGame(BuildContext context, int? scoreOff, int? scoreDef,
+      String modelname) async {
     GameProvider gameProvider =
         Provider.of<GameProvider>(context, listen: false);
     //Calculate total score of user
@@ -76,14 +76,11 @@ class UserProvider extends ChangeNotifier {
         // Adjust the game settings when the user is updated => See GameProvider method
         gameProvider.setCollectedItems(modelname);
         // else display error message?
-      } else {
-        //TO DO
-
-      }
+      } else {}
     });
   }
 
-  void resetUser(){
+  void resetUser() {
     _userid = 0;
     _avatarID = 0;
     _score = 0;

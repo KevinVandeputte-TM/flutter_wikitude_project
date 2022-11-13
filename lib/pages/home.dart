@@ -47,15 +47,13 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    debugPrint("TEST home widgetbinding INIT STATE");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      debugPrint("TEST home widgetbinding");
       Provider.of<GameProvider>(context, listen: false).fetchModelsfromApi();
     });
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      debugPrint("TEST home widgetbinding");
-      Provider.of<GameProvider>(context, listen: false).fetchHighestLevelFromApi();
+      Provider.of<GameProvider>(context, listen: false)
+          .fetchHighestLevelFromApi();
     });
 
     usernameController = TextEditingController();
@@ -134,19 +132,25 @@ class _HomePageState extends State<HomePage> {
               TextField(
                 autofocus: true,
                 decoration: const InputDecoration(hintText: "Username"),
-                controller: usernameController, 
+                controller: usernameController,
                 onSubmitted: (_) => startgame(),
               ),
             ],
           ),
           actions: [
             ElevatedButton.icon(
-              icon: Icon( (context.watch<GameProvider>().canStart) ? Icons.play_arrow : Icons.sync_rounded),
-              label: Text( (context.watch<GameProvider>().canStart) ? 'Start Game' : "Getting your location...",
-                    style: TextStyle(
-                      fontSize: 15.0,
-                    )),
-              onPressed: (context.watch<GameProvider>().canStart) ? startgame : null,
+              icon: Icon((context.watch<GameProvider>().canStart)
+                  ? Icons.play_arrow
+                  : Icons.sync_rounded),
+              label: Text(
+                  (context.watch<GameProvider>().canStart)
+                      ? 'Start Game'
+                      : "Getting your location...",
+                  style: TextStyle(
+                    fontSize: 15.0,
+                  )),
+              onPressed:
+                  (context.watch<GameProvider>().canStart) ? startgame : null,
             )
           ],
         ),
@@ -181,10 +185,7 @@ class _HomePageState extends State<HomePage> {
                         )
                       }
                     else
-                      {
-                        debugPrint("AR permissions denied"),
-                        debugPrint(value.message)
-                      }
+                      {debugPrint(value.message)}
                   })
             }
           else
@@ -212,7 +213,7 @@ class _HomePageState extends State<HomePage> {
     context.read<GameProvider>().setServicestatus(gelocatorservice);
 
     if (gelocatorservice) {
-      debugPrint("Home: Start servicestatus check: $gelocatorservice");
+//check permissions if location can be fetched
       var locationpermission = await Geolocator.checkPermission();
       context.read<GameProvider>().setLocationPermission(locationpermission);
 
