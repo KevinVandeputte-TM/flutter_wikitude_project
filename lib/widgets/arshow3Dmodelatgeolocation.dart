@@ -97,10 +97,6 @@ class _ARShow3DModelAtGeolocationWidgetState
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                // const Text(
-                //   "Look around to find items ",
-                //   textAlign: TextAlign.center,
-                // ),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
@@ -109,10 +105,15 @@ class _ARShow3DModelAtGeolocationWidgetState
                       side: BorderSide.none),
                   onPressed: () {
                     // SystemChannels.platform.invokeMethod("SystemNavigator.pop");
-                    positionStream.cancel();
+
+                    // architectWidget..destroy().then(
+                    //    (value) => Navigator.popAndPushNamed(context, "/"));
+                    architectWidget.pause();
+                    architectWidget.destroy();
                     dispose();
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => HomePage()));
+                    Navigator.pushNamed(context, '/home');
+                    //  Navigator.popUntil(context, (route) => route.isFirst);
+                    //   Navigator.popUntil(context, ModalRoute.withName("/home"));
                   },
 
                   icon: Icon(
@@ -187,6 +188,7 @@ class _ARShow3DModelAtGeolocationWidgetState
   void dispose() async {
     await architectWidget.pause();
     await architectWidget.destroy();
+
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -200,6 +202,11 @@ class _ARShow3DModelAtGeolocationWidgetState
     architectWidget.resume();
     architectWidget.setJSONObjectReceivedCallback(
         (result) => OnJSONObjectReceived(result));
+  }
+
+  Future<void> onLoadFailed(String error) async {
+    debugPrint("---*FLUTTER Failed to load Architect World");
+    debugPrint(error);
   }
 
   Future<void> onLoadSuccess() async {
@@ -222,19 +229,12 @@ class _ARShow3DModelAtGeolocationWidgetState
         'World.setStartPosition("${startcoordinates.lat}","${startcoordinates.lon}","${startcoordinates.alt}","${startcoordinates.acc}")');
   }
 
-  Future<void> onLoadFailed(String error) async {
-    debugPrint("---*FLUTTER Failed to load Architect World");
-    debugPrint(error);
-  }
-
   void OnJSONObjectReceived(Map<String, dynamic> jsonObject) async {
     var clickedmodel = ARModelResponse.fromJson(jsonObject);
     await positionStream.cancel();
     await architectWidget.pause();
     await architectWidget.destroy();
     dispose();
-
-    //await architectWidget.pause();
 
     await Future.delayed(const Duration(milliseconds: 500));
 

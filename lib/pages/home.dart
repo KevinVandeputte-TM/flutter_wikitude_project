@@ -68,61 +68,49 @@ class _HomePageState extends State<HomePage> {
   //BUILD
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Center(
-          child: const Text(
-            "A game of thrones",
-            textAlign: TextAlign.center,
+    return Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/background.jpg"),
+            fit: BoxFit.cover,
           ),
         ),
-      ),
-      body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/background.jpg"),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Center(
-            child: Container(
-                padding: EdgeInsets.all(5), //You can use EdgeInsets like above
+        child: Center(
+          child: Container(
+              padding: EdgeInsets.all(5), //You can use EdgeInsets like above
 
-                decoration:
-                    BoxDecoration(shape: BoxShape.rectangle, boxShadow: [
-                  BoxShadow(
-                    color: Color(0xB3FFD640),
-                    blurRadius: 20.0,
-                    spreadRadius: 5.0,
-                  ),
-                ]),
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    backgroundColor: Color.fromARGB(255, 255, 195, 64),
-                  ),
-                  onPressed: () async {
-                    // USERNAME POP UP
-                    final username = await openDialog();
-                    if (username == null || username.isEmpty) return;
+              decoration: BoxDecoration(shape: BoxShape.rectangle, boxShadow: [
+                BoxShadow(
+                  color: Color(0xB3FFD640),
+                  blurRadius: 20.0,
+                  spreadRadius: 5.0,
+                ),
+              ]),
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color.fromARGB(255, 255, 195, 64),
+                ),
+                onPressed: () async {
+                  // USERNAME POP UP
+                  final username = await openDialog();
+                  if (username == null || username.isEmpty) return;
 
-                    setState(() {
-                      _username = username;
-                    });
-                  },
-                  icon: Icon(
-                    // <-- Icon
-                    Icons.play_arrow,
-                    size: 30.0,
-                  ),
-                  label: Text('Play Game',
-                      style: TextStyle(
-                        fontSize: 30.0,
-                      )), // <-- Text
-                )),
-          )),
-    );
+                  setState(() {
+                    _username = username;
+                  });
+                },
+                icon: Icon(
+                  // <-- Icon
+                  Icons.play_arrow,
+                  size: 30.0,
+                ),
+                label: Text('Play Game',
+                    style: TextStyle(
+                      fontSize: 30.0,
+                    )), // <-- Text
+              )),
+        ));
   }
 
   //DIALOG FOR USERNAME
