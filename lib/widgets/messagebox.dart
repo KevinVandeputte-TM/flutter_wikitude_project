@@ -26,14 +26,14 @@ class MessageBoxWidget {
         SnackBar(
           behavior: SnackBarBehavior.floating,
           margin:
-              EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 2),
+              EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 3),
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           content: Stack(
             clipBehavior: Clip.none,
             children: [
               Container(
-                height: 150,
+                height: 220,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -69,7 +69,7 @@ class MessageBoxWidget {
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Color.fromRGBO(26, 26, 26, 0.9),
-                                fontSize: 12,
+                                fontSize: 14,
                               ),
                             ),
                           ]))

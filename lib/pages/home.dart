@@ -27,7 +27,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //navigation
   final pages = const [HomePage(), HighScorePage(), GameRulesPage()];
-  late TextEditingController usernameController;
+  TextEditingController usernameController = TextEditingController();
   //user and avatar
   String _username = "";
   late int _selectedavatar;
@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    usernameController.dispose();
+    //usernameController.dispose();
     super.dispose();
   }
 
