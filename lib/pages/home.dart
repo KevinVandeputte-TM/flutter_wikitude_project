@@ -15,7 +15,6 @@ import '../apis/edgeserver_api';
 
 import 'package:provider/provider.dart';
 
-import '../widgets/bottonbar.dart';
 import 'argame.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,7 +27,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //navigation
   final pages = const [HomePage(), HighScorePage(), GameRulesPage()];
-  late TextEditingController usernameController;
+  TextEditingController usernameController = TextEditingController();
   //user and avatar
   String _username = "";
   late int _selectedavatar;
@@ -65,7 +64,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    usernameController.dispose();
+    //usernameController.dispose();
     super.dispose();
   }
 
@@ -120,6 +119,7 @@ class _HomePageState extends State<HomePage> {
   Future<String?> openDialog() => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
+          // backgroundColor: Color.fromRGBO(161, 186, 193, 0.90),
           content: Column(
             children: <Widget>[
               const Text("Choose your avatar"),
@@ -139,7 +139,9 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: [
             ElevatedButton.icon(
-              icon: Icon((context.watch<GameProvider>().canStart) //if game provider is ready show start button, otherwise show other label
+              icon: Icon((context
+                      .watch<GameProvider>()
+                      .canStart) //if game provider is ready show start button, otherwise show other label
                   ? Icons.play_arrow
                   : Icons.sync_rounded),
               label: Text(
@@ -149,8 +151,9 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 15.0,
                   )),
-              onPressed:
-                  (context.watch<GameProvider>().canStart) ? startgame : null, //if game provider is ready allow start game
+              onPressed: (context.watch<GameProvider>().canStart)
+                  ? startgame
+                  : null, //if game provider is ready allow start game
             )
           ],
         ),

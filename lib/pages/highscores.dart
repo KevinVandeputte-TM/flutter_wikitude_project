@@ -63,16 +63,13 @@ class _HighScorePageState extends State {
           child: ListView.builder(
             itemCount: count,
             itemBuilder: (BuildContext context, int position) {
-              return
-                  // FractionallySizedBox(
-                  //     widthFactor: 0.8,
-                  //     child:
-                  Card(
+              return Card(
                 elevation: 0,
                 surfaceTintColor: Colors.transparent,
                 color: Colors.transparent,
                 margin: EdgeInsets.only(left: 15, right: 15, top: 10),
                 child: ListTileWidget(
+                    position: position + 1,
                     avatar: "${userList[position].avatarID}.png",
                     subtitletext: "Player: ${userList[position].name}",
                     titletext: "Score: ${userList[position].score}"),

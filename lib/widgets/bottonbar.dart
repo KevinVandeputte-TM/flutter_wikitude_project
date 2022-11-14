@@ -19,7 +19,8 @@ class BottomBarWidget extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentScreenIndex,
-        backgroundColor: Color(0xFF394F49),
+        backgroundColor: Color.fromARGB(
+            255, 23, 55, 70), //backgroundColor: Color(0xFF394F49),
         // showSelectedLabels: false,
         selectedIconTheme:
             IconThemeData(color: Color.fromARGB(255, 255, 195, 64)),

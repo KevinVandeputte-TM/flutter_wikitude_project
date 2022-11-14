@@ -102,16 +102,10 @@ class _ARShow3DModelAtGeolocationWidgetState
                       foregroundColor: Colors.white,
                       side: BorderSide.none),
                   onPressed: () {
-                    // SystemChannels.platform.invokeMethod("SystemNavigator.pop");
-
-                    // architectWidget..destroy().then(
-                    //    (value) => Navigator.popAndPushNamed(context, "/"));
-                    architectWidget.pause();
-                    architectWidget.destroy();
-                    dispose();
-                    Navigator.pushNamed(context, '/home');
-                    //  Navigator.popUntil(context, (route) => route.isFirst);
-                    //   Navigator.popUntil(context, ModalRoute.withName("/home"));
+                    //close button
+                    // architectWidget.pause();
+                    // architectWidget.destroy();
+                    closeworld();
                   },
 
                   icon: Icon(
@@ -131,7 +125,7 @@ class _ARShow3DModelAtGeolocationWidgetState
           child: architectWidget, //ar widget
         ),
         bottomNavigationBar: BottomAppBar(
-          color: Color(0xFF394F49),
+          color: Color.fromARGB(255, 23, 55, 70),
           child: Container(
             height: 70.0,
             margin: EdgeInsets.only(top: 10),
@@ -183,7 +177,7 @@ class _ARShow3DModelAtGeolocationWidgetState
   }
 
   @override
-  void dispose() async {
+  Future<void> dispose() async {
     await architectWidget.pause();
     await architectWidget.destroy();
 
@@ -219,12 +213,16 @@ class _ARShow3DModelAtGeolocationWidgetState
         'World.setStartPosition("${startcoordinates.lat}","${startcoordinates.lon}","${startcoordinates.alt}","${startcoordinates.acc}")');
   }
 
+//when model is clicked => open flutter question page
   void OnJSONObjectReceived(Map<String, dynamic> jsonObject) async {
+    //give modelname to flutter
     var clickedmodel = ARModelResponse.fromJson(jsonObject);
+    //close the positionstream
     await positionStream.cancel();
-    await architectWidget.pause();
-    await architectWidget.destroy();
-    dispose();
+
+    //await architectWidget.pause();
+    //await architectWidget.destroy();
+    await dispose();
 
     await Future.delayed(const Duration(milliseconds: 500));
 
@@ -234,5 +232,12 @@ class _ARShow3DModelAtGeolocationWidgetState
         MaterialPageRoute(
             builder: (context) =>
                 QuestionPage(modelname: clickedmodel.modelname)));
+  }
+
+  void closeworld() async {
+    await positionStream.cancel();
+    await dispose();
+    await Future.delayed(const Duration(milliseconds: 500));
+    Navigator.pushNamed(context, '/home');
   }
 }

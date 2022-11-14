@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:got_app/pages/gamerules.dart';
 import 'package:got_app/pages/highscores.dart';
 import 'package:got_app/pages/home.dart';
-import 'package:got_app/pages/question.dart';
 import 'package:got_app/providers/gameprovider.dart';
 import 'package:got_app/providers/screenindexprovider.dart';
 import 'package:got_app/providers/userprovider.dart';
@@ -32,11 +31,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: '',
         theme: ThemeData(
-          primarySwatch: createMaterialColor(const Color(0xFF394F49)),
+          primarySwatch: createMaterialColor(Color.fromARGB(255, 23, 55, 70)),
           textTheme: GoogleFonts.bebasNeueTextTheme(),
-          scaffoldBackgroundColor: const Color(0xFF394F49),
+          scaffoldBackgroundColor: Color.fromARGB(255, 23, 55, 70),
           appBarTheme: AppBarTheme(
-            color: const Color(0xFF394F49),
+            color: Color.fromARGB(255, 23, 55, 70),
           ),
         ),
         initialRoute: '/home',
@@ -47,12 +46,6 @@ class MyApp extends StatelessWidget {
                 child: Scaffold(
                     appBar: AppBar(
                       automaticallyImplyLeading: false,
-                      title: Center(
-                        child: const Text(
-                          "A game of thrones",
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
                     ),
                     body: HomePage(),
                     bottomNavigationBar: BottomBarWidget()));
@@ -61,10 +54,6 @@ class MyApp extends StatelessWidget {
           '/highscores': (context) => HighScorePage(),
           '/rules': (context) => GameRulesPage(),
         });
-    // home: SafeArea(
-    //     child: Scaffold(
-    //         body: const HomePage(),
-    //         bottomNavigationBar: BottomBarWidget())));
   }
 }
 
