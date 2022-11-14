@@ -15,7 +15,7 @@ class ListTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromRGBO(156, 196, 178, 0.90),
+      color: Color.fromRGBO(161, 186, 193, 0.90),
       child: ListTile(
         tileColor: Colors.transparent,
         leading:

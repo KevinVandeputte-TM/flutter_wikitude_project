@@ -63,11 +63,7 @@ class _HighScorePageState extends State {
           child: ListView.builder(
             itemCount: count,
             itemBuilder: (BuildContext context, int position) {
-              return
-                  // FractionallySizedBox(
-                  //     widthFactor: 0.8,
-                  //     child:
-                  Card(
+              return Card(
                 elevation: 0,
                 surfaceTintColor: Colors.transparent,
                 color: Colors.transparent,

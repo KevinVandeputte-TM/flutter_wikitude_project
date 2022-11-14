@@ -102,16 +102,11 @@ class _ARShow3DModelAtGeolocationWidgetState
                       foregroundColor: Colors.white,
                       side: BorderSide.none),
                   onPressed: () {
-                    // SystemChannels.platform.invokeMethod("SystemNavigator.pop");
-
-                    // architectWidget..destroy().then(
-                    //    (value) => Navigator.popAndPushNamed(context, "/"));
                     architectWidget.pause();
                     architectWidget.destroy();
                     dispose();
+                    //redirect to home
                     Navigator.pushNamed(context, '/home');
-                    //  Navigator.popUntil(context, (route) => route.isFirst);
-                    //   Navigator.popUntil(context, ModalRoute.withName("/home"));
                   },
 
                   icon: Icon(

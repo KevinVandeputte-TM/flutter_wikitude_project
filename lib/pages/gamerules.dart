@@ -26,7 +26,7 @@ class GameRulesPage extends StatelessWidget {
                 child: Padding(
                     padding: EdgeInsets.all(50.0),
                     child: Container(
-                      color: Color.fromRGBO(156, 196, 178, 0.75),
+                      color: Color.fromRGBO(161, 186, 193, 0.90),
                       child: Padding(
                         padding: EdgeInsets.all(15.0),
                         child: Column(
