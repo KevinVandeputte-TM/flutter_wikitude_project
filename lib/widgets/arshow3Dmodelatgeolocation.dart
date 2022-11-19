@@ -192,6 +192,7 @@ class _ARShow3DModelAtGeolocationWidgetState
         onLoadFailed);
 
     architectWidget.resume();
+
     architectWidget.setJSONObjectReceivedCallback(
         (result) => OnJSONObjectReceived(result));
   }
@@ -220,8 +221,6 @@ class _ARShow3DModelAtGeolocationWidgetState
     //close the positionstream
     await positionStream.cancel();
 
-    //await architectWidget.pause();
-    //await architectWidget.destroy();
     await dispose();
 
     await Future.delayed(const Duration(milliseconds: 500));
@@ -236,6 +235,7 @@ class _ARShow3DModelAtGeolocationWidgetState
 
   void closeworld() async {
     await positionStream.cancel();
+
     await dispose();
     await Future.delayed(const Duration(milliseconds: 500));
     Navigator.pushNamed(context, '/home');
